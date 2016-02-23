@@ -117,3 +117,5 @@ void initPolymorephic(){
         printf("%d\n",shape[i]->functions.getX(shape[i]));
     }
 }
+
+

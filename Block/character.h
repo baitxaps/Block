@@ -15,6 +15,8 @@
 #define RE(b) (!(b))
 #define SUM(a,b) ((a)+(b))
 #define SUB(x,y) ((x)-(y))
+#define MAX(A,B) (A>B)?(A):(B)
+#define MIN(A,B) (A<B)?(A):(B)
 
 typedef int (fptrOperation)(const char *,const char *);
 
@@ -40,9 +42,10 @@ void mallocContinuity();
 
 //分配不连续内存
 void mallocDiscontinuity();
-
-
 int compare(const char *s1, const char *s2);
 void displayNames(char *names[],int size);
 void sort(char *array[],int size, fptrOperation operation);
+
+
+void execCmd();
 #endif /* character_h */

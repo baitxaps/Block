@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7724A1B61C7C63BA00AD740E /* client_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7724A1B51C7C63BA00AD740E /* client_socket.m */; };
+		7724A1B91C7C657000AD740E /* server_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 7724A1B81C7C657000AD740E /* server_socket.m */; };
+		7724A1C41C7C689B00AD740E /* socket_manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7724A1C31C7C689B00AD740E /* socket_manager.m */; };
+		7724A1C81C7C6A3300AD740E /* Algorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = 7724A1C71C7C6A3300AD740E /* Algorithm.m */; };
 		773297221C7C4870001F853F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 773297211C7C4870001F853F /* main.m */; };
 		773297381C7C48D6001F853F /* binaryTree.c in Sources */ = {isa = PBXBuildFile; fileRef = 773297281C7C48D5001F853F /* binaryTree.c */; };
 		773297391C7C48D6001F853F /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 7732972A1C7C48D5001F853F /* character.c */; };
@@ -33,6 +37,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7724A1B41C7C63BA00AD740E /* client_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_socket.h; sourceTree = "<group>"; };
+		7724A1B51C7C63BA00AD740E /* client_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = client_socket.m; sourceTree = "<group>"; };
+		7724A1B71C7C657000AD740E /* server_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_socket.h; sourceTree = "<group>"; };
+		7724A1B81C7C657000AD740E /* server_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = server_socket.m; sourceTree = "<group>"; };
+		7724A1C21C7C689B00AD740E /* socket_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket_manager.h; sourceTree = "<group>"; };
+		7724A1C31C7C689B00AD740E /* socket_manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = socket_manager.m; sourceTree = "<group>"; };
+		7724A1C61C7C6A3300AD740E /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Algorithm.h; sourceTree = "<group>"; };
+		7724A1C71C7C6A3300AD740E /* Algorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Algorithm.m; sourceTree = "<group>"; };
 		7732971E1C7C4870001F853F /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
 		773297211C7C4870001F853F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Block/main.m; sourceTree = "<group>"; };
 		773297281C7C48D5001F853F /* binaryTree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = binaryTree.c; path = Block/binaryTree.c; sourceTree = "<group>"; };
@@ -68,10 +80,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7724A1B31C7C639C00AD740E /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				7724A1B41C7C63BA00AD740E /* client_socket.h */,
+				7724A1B51C7C63BA00AD740E /* client_socket.m */,
+				7724A1B71C7C657000AD740E /* server_socket.h */,
+				7724A1B81C7C657000AD740E /* server_socket.m */,
+				7724A1C21C7C689B00AD740E /* socket_manager.h */,
+				7724A1C31C7C689B00AD740E /* socket_manager.m */,
+			);
+			name = Socket;
+			sourceTree = "<group>";
+		};
+		7724A1C51C7C69E500AD740E /* Algorithm */ = {
+			isa = PBXGroup;
+			children = (
+				7724A1C61C7C6A3300AD740E /* Algorithm.h */,
+				7724A1C71C7C6A3300AD740E /* Algorithm.m */,
+			);
+			name = Algorithm;
+			sourceTree = "<group>";
+		};
 		773297151C7C4870001F853F = {
 			isa = PBXGroup;
 			children = (
 				773297211C7C4870001F853F /* main.m */,
+				7724A1C51C7C69E500AD740E /* Algorithm */,
+				7724A1B31C7C639C00AD740E /* Socket */,
 				77E6040E1C7C5AFA00D9325E /* DS */,
 				77E6040D1C7C5AE700D9325E /* GCD */,
 				773297201C7C4870001F853F /* Block */,
@@ -188,12 +224,16 @@
 				7732973B1C7C48D6001F853F /* polymorphic.c in Sources */,
 				773297391C7C48D6001F853F /* character.c in Sources */,
 				7732973F1C7C48D6001F853F /* thread.c in Sources */,
+				7724A1B61C7C63BA00AD740E /* client_socket.m in Sources */,
 				7732973A1C7C48D6001F853F /* link.c in Sources */,
 				7732973C1C7C48D6001F853F /* queue.c in Sources */,
 				7732973D1C7C48D6001F853F /* stack.c in Sources */,
+				7724A1C41C7C689B00AD740E /* socket_manager.m in Sources */,
 				773297381C7C48D6001F853F /* binaryTree.c in Sources */,
+				7724A1C81C7C6A3300AD740E /* Algorithm.m in Sources */,
 				773297411C7C493D001F853F /* block.mm in Sources */,
 				7732973E1C7C48D6001F853F /* struct.c in Sources */,
+				7724A1B91C7C657000AD740E /* server_socket.m in Sources */,
 				773297221C7C4870001F853F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
