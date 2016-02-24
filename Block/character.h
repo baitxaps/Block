@@ -46,6 +46,4 @@ int compare(const char *s1, const char *s2);
 void displayNames(char *names[],int size);
 void sort(char *array[],int size, fptrOperation operation);
 
-
-void execCmd();
 #endif /* character_h */

@@ -16,8 +16,19 @@
 #include "polymorphic.h"
 #import <string.h>
 #import "block.h"
+#import "GCD.h"
 
 int main(int argc, const char * argv[]) {
+    //GCD
+    GCD *gcd = [GCD new];
+    [gcd testConcurrentQueue];
+    
+    double fraction, integer;
+    double number = 100000.567;
+    fraction = modf(number, &integer);
+    printf("The whole and fractional parts of %lf are %lf and %lf\n",
+           number, integer, fraction);
+    //block
     block *b = [block new];
     [b testBlk1];
     [b testBlk2];

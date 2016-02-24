@@ -10,8 +10,6 @@
 
 @implementation Algorithm
 
-
-
 char *getRandomString(int len)
 {
     char *str = (char *)malloc(sizeof(char)*len);
@@ -324,14 +322,14 @@ void execCmd(){
             printf("what a fucking day");
         }
     }
-    free(str);//-------//
+    free(str);//
     free(arr);//
     
     printf("%ld",sizeof(InneerInfo()))   ;
     
-    //    char *app = zipString("aaaaaa1eee0");
-    //    printf("%s\n",app);
-    //    free(app);
+//    char *app = zipString("aaaaaa1eee0");
+//    printf("%s\n",app);
+//    free(app);
     
     ListNode *listNode = create()   ;
     
