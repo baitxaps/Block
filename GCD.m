@@ -108,6 +108,7 @@
  */
 
 #pragma mark - testConcurrentQueue
+
 - (void)testConcurrentQueue{
     //0.
     dispatch_queue_t serialDispatchQueue = dispatch_queue_create("blog.csdn.net/baitxaps", NULL);
@@ -158,6 +159,40 @@
     //6.dispatch_walltime()
     dispatch_time_t seconds = getDispatchTimeByDate([NSDate date]);
     NSLog(@"second = %llu",seconds);
+    
+    //7.Dispatch Group
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk0");});
+    dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk1");});
+    dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk2");});
+    
+    dispatch_group_notify(group, mainDispatchQueue, ^{NSLog(@"done");});
+#if !OS_OBJECT_USE_OBJC
+    dispatch_release(group);
+#endif
+    
+    //7.dispatch_group_wait()
+    dispatch_group_t group_wait = dispatch_group_create();
+    dispatch_group_async(group_wait, globalDispatchQueueDefault, ^{NSLog(@"blk0");});
+    dispatch_group_async(group_wait, globalDispatchQueueDefault, ^{NSLog(@"blk1");});
+    dispatch_group_async(group_wait, globalDispatchQueueDefault, ^{NSLog(@"blk2");});
+    
+    dispatch_group_wait(group_wait, DISPATCH_TIME_FOREVER);
+#if !OS_OBJECT_USE_OBJC
+    dispatch_release(group_wait);
+#endif
+    
+    //8.
+    time = dispatch_time(DISPATCH_TIME_NOW,1ull *NSEC_PER_SEC);
+    dispatch_group_t group_result = dispatch_group_create();
+    long result = dispatch_group_wait(group_result, time);
+   // long result = dispatch_group_wait(group_result, DISPATCH_TIME_NOW);
+    if (result == 0) {
+        //属于Dispatch Group的全部内容处理执行结束
+    }else{
+        //属于Dispatch Group的某一个处理还在执行中
+    }
+    
 }
 
 dispatch_time_t getDispatchTimeByDate(NSDate *date){
@@ -253,10 +288,90 @@ dispatch_time_t getDispatchTimeByDate(NSDate *date){
 //9.Dispatch Group
 
 /*
+1>在追加到Dispatch Queue中的多个处理全部结束后想执行处理，这种情况会经常出现，只使用一个Serial Dispatch Queue
+ 时，只要将想执行的处理全部追加到该Serial Dispatch Queue中并在最后追加结束处理即可，但是，在使用
+ Concurrent Dispatch Queue时或同进使用多个Dispatch Queue时，源代码就会变得颇为复杂
+ 
+ 2>追加3个Block到Global Dispatch Queue,这些Block如果全部执行完毕，就会执行Main Dispatch Queue中结束处理的
+ Block:
+ 
+ dispatch_group_t group = dispatch_group_create();
+ dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk0");});
+ dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk1");});
+ dispatch_group_async(group, globalDispatchQueueDefault, ^{NSLog(@"blk2");});
+ 
+ dispatch_group_notify(group, mainDispatchQueue, ^{NSLog(@"done");});
+#if !OS_OBJECT_USE_OBJC
+ dispatch_release(group);
+#endif
+ 
+ 因为向Global Dispatch Queue即Concurrent Dispatch Queue追加处理，多个线程并行执行，所以
+ 追加处理的执行顺序不定。执行时会发生变化，但是此执行结果的done一定是最后输出的
+ 
+ 3>无论向什么样的Dispatch Queue中追加处理，使用Dispatch Group都可监视这些处理执行的结束，一旦
+ 检测到所有处理执行结束，就可将结束的处理追加到Dispatch Queue中
+ 
+ 4>dispatch_group_async()与dispatch_async()相同，都追加Block到指定的Dispatch Queue,与dispatch_async()
+ 不同的是指定生成的Dispatch Group为第一个参数，指定的Block属于指定的Dispatch Group。
+ 
+ 5>追加Block到Dispatch Queue时同样，Block通过dispathc_retain()持有Dispatch Group,从
+ 而使得该Block属于Dispatch Group。这样如果Block执行结束，该Block就通过dispatch_release()释放
+ 持有的Dispatch Group，一旦Dispatch Group使用结束，不用考虑属于该Dispatch Group的Block,立即
+ 通过dispatch_release()释放即可
+ 
+ 6>dispatch_group_notify(p1,p2,p3);
+  在追加到Dispatch Group中的处理全部执行结束时，该源代码中使用的dispatch_group_notify()会将执行Block
+ 追加到Dispatch Queue中。
+ p1,指定要监视的Dispatch Group,在追加到Dispatch Group的全部全部处理执行结束时，将p3的Block追加到p2
+ 的Dispatch Queue中。
+ 在dispatch_group_notify()中不管指定什么样的Dispatch Queue,属于Dispatch Group的全部处理在追加指定
+ 的Block时都已执行结束
+ 
+ 7>dispatch_group_wait()
+ 另外，在Dispatch Group中也可以使用dispatch_group_wait()仅等全部处理执行结束。
+ dispatch_group_t group_w = dispatch_group_create();
+ dispatch_group_async(group_w, globalDispatchQueueDefault, ^{NSLog(@"blk0");});
+ dispatch_group_async(group_w, globalDispatchQueueDefault, ^{NSLog(@"blk1");});
+ dispatch_group_async(group_w, globalDispatchQueueDefault, ^{NSLog(@"blk2");});
+ 
+ dispatch_group_wait(group_w, DISPATCH_TIME_FOREVER);
+ #if !OS_OBJECT_USE_OBJC
+ dispatch_release(group_w);
+ #endif
+ 
+ dispatch_group_wait(p1,p2)
+ p2:指定为等待的时间(超时），它属于dispatch_time_t类型的值，DISPATCH_TIME_FOREVER永久等待，只要
+ Dispatch Group的处理尚未执行结束，就会一直等待，中途不能取消。如同dispatch_after()说明中出现的那样
+ 指定等待间隔为1秒应做如下处理：
+ 
+ time = dispatch_time(DISPATCH_TIME_NOW,1ull *NSEC_PER_SEC);
+ dispatch_group_t group_result = dispatch_group_create();
+ long result = dispatch_group_wait(group_result, time);
+ if (result == 0) {
+ //属于Dispatch Group的全部内容处理执行结束
+ }else{
+ //属于Dispatch Group的某一个处理还在执行中
+ }
+ 
+ 如果dispatch_group_wait()返回不是0,即虽然经过了指定的时间，但属于Dispatch Group的某一个处理还在执行中，如果
+ 返回值为0,那么全部处理执行结束。当等待时间为DISPATCH_TIME_FOREVER，由dispatch_group_wait()返回时，由于属于
+ Dispatch Group的处理必定全部执行结束，因此返回值恒为0。
+ 这时的”等待“意味着一旦调用dispatch_group_wait()，该函数就处于调用的状态而不返回。即执行dispatch_group_wait()的
+ 现在线程(当前线程)停止。在经过dispatch_group_wait()中指定的时间或属于指定Dispatch Group和处理全部执行结束之前，
+ 执行该函数的线程停止。
+ 
+ 指定DISPATCH_TIME_NOW，则不用作何等待即可判定属于Dispatch Group的处理是否执行结束：
+ long result = dispatch_group_wait(group_result, DISPATCH_TIME_NOW);
+ 
+ 在主线程的RunLoop的每次循环中，可检查执行是否结束，从而不耗费多余的等待时间，虽然这样也可以，但一般在这
+ 种情形dispatch_group_notify()追加结束处理到Main Dispatch Queue中，这时因为dispatch_group_notify()
+ 可以简化源码
+ 
  
  */
 
-
+#pragma mark -dispatch_barrier_async
+//10.dispatch_barrier_async
 
 
 
