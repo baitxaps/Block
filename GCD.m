@@ -273,20 +273,6 @@
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk5 for reading");});
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk6 for reading");});
     
-    //死锁下面几种情况：
-/*
-    //1>
-    dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁1");});
-    //2>
-    dispatch_async(mainDispatchQueue, ^{
-        dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁2");});
-    });
-    //3>
-    dispatch_async(serialDispatchQueue, ^{
-        dispatch_sync(serialDispatchQueue, ^{NSLog(@"死锁3");});
-    });
- */
-    
     //10.dispatch_apply()
     //0>
     dispatch_apply(10, globalDispatchQueueDefault, ^(size_t index) {
@@ -372,6 +358,20 @@
     之前的源代码在大多数情况下也是安全的，但在多核CPU中，在正在更新表示是否初始化的标志变量时读取，就有
     可能多次执行初始化处理。而用dispatch_once()初始化就不必担心这样的问题。
     这就是所说的单例模式，在生成单例对象时使用。
+     */
+    
+    //死锁下面几种情况：
+    /*
+     //1>
+     dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁1");});
+     //2>
+     dispatch_async(mainDispatchQueue, ^{
+     dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁2");});
+     });
+     //3>
+     dispatch_async(serialDispatchQueue, ^{
+     dispatch_sync(serialDispatchQueue, ^{NSLog(@"死锁3");});
+     });
      */
 }
 
@@ -820,95 +820,6 @@ dispatch_release(semaphore);
 //12.Dispatch Source
 /*
  */
-
-//AFNetworking 中RunLoop的创建
-- (void)netWorkRequestThreadEntryPoint:(id)__unused  object{
-    @autoreleasepool {
-        [[NSThread currentThread]setName:@"AFNetworking"];
-        
-        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-        [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
-        
-        [runLoop run];
-    }
-}
-
-
-- (NSThread *)networkRequestThread{
-    static NSThread *_networkRequestThread = nil;
-    static dispatch_once_t oncePreadicate;
-    dispatch_once(&oncePreadicate, ^{
-        _networkRequestThread = [[NSThread alloc]initWithTarget:self selector:@selector(netWorkRequestThreadEntryPoint:) object:nil];
-        [_networkRequestThread start];
-    });
-    return _networkRequestThread;
-}
-
-
-
-//接到crash的singal 后后动重启RunLoop
-- (void)restartRuningRunLoop{
-    CFRunLoopRef runloop = CFRunLoopGetCurrent();
-    NSArray *allModes = CFBridgingRelease(CFRunLoopCopyAllModes(runloop));
-    while(1){
-        for(NSString *mode in allModes){
-            CFRunLoopRunInMode((CFStringRef)mode,0.001,false);
-        }
-    }
-}
-
-
-//TableView 延迟加载图片新思路
-#if TARGET_OS_IPHONE
-UIImageView *imageView;
-- (void)delayLoadingImage{
-    
-    UIImage *downLoadImage = nil;
-    [imageView performSelector:@selector(setImage:)
-                    withObject:downLoadImage
-                    afterDelay:0
-                       inModes:@[NSDefaultRunLoopMode]]
-}
-#elif TARGET_OS_MAC
-//...
-#endif
-
-- (void)content:(NSString *(^)(NSString * content))block{
-    
-}
-
-//异步测试
-- (void)runUnitlBlock:(BOOL(^)())block timeout:(NSTimeInterval)timeout{
-    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
-    do{
-        CFTimeInterval quantum = 0.0001;
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode,quantum,false);
-    }while ([timeoutDate timeIntervalSinceNow]>0 &&!block()) ;
-}
-
-//异步测试升级
-- (BOOL)upgradeRunUnitlBlock:(BOOL(^)())block timeout:(NSTimeInterval)timeout{
-    __block Boolean fulfilled = NO;
-    void(^beforeWaiting)(CFRunLoopObserverRef observer,CFRunLoopActivity activity)=
-    ^(CFRunLoopObserverRef observer,CFRunLoopActivity activity){
-        fulfilled = block();
-        if (fulfilled) {
-            CFRunLoopStop(CFRunLoopGetCurrent());
-        }
-    };
-    
-    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(NULL,\
-                                  kCFRunLoopBeforeWaiting, true, 0, beforeWaiting);
-    
-    CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopDefaultMode);
-    
-    //run
-    CFRunLoopRunInMode(kCFRunLoopDefaultMode, timeout, false);
-    CFRunLoopRemoveObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopDefaultMode);
-    CFRelease(observer);
-    
-    return fulfilled;
-}
 
 
 
