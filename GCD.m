@@ -10,6 +10,76 @@
 
 
 @implementation GCD
+
+#pragma mark -GCD实现
+//GCD实现
+/*
+ 1>GCD实现需要使用的一些工具：
+ .用于管理追加的Block的C语言层实现的FIFO队列
+ .Atomic 函数中实现的用于排他控制的轻量级信号
+ .用于管理线程的C语言层实现的一些容器
+ 
+ 但是还要内核级的实现,通常，应用程序中编写的线程管理用的代码要在系统级(iOS和OS X的核心级)实现
+ 因此，无论编程人员如何努力编写管理线程的代码，在性能方面也不能胜过XNU内核级所实现的GCD。
+ 使用使用GCD要比使用pthreads和NSThread这些一般的多线程编程API更好，并且，如果使用GCD就不必
+ 编写这操作线程反复出现类似的源代码(因定源代码片断)，而可以在线程中集中实现处理内容。尽量多使用
+ GCD或者用Cocoa框架GCD的NSOperationQueue类的API
+ 
+ 2>用于实现Dispatch Queue而使用的软件组件
+ 组件名称               提供技术
+ libdispatch         Dispatch Queue
+ libc(pthreads)      pthread_workqueue
+ XUN内核              workqueue
+ 
+ 3>编程人员所使用GCD的API全部为包含有libdispatch库的Ｃ函数，Dispatch Queue通过结构体和链表，被
+ 实现为FIFO队列，FIFO队列管理是通过dispatch_async()等函数所追加的Block,Block并不是直接加入FIFO
+ 队列，而是先加入Dispatch Continuation这一dispatch_continuation_t类型结构体中，然后再加入FIFO
+ 队列。Dispatch Continuation用于记忆Block所属的Dispatch Group和其他一些信息(执行上下文)
+ 
+ 4>Dispatch Queue可通过dispatch_set_target_queue()设定，可以设定执行该Dispatch Queue处理的
+ Dispatch Queue为目标。该目标可像串珠子一样，设定多个连接在一起的Dispatch Queue,但是在连接串的最后
+ 必须设定Main Dispatch Queue，或各种优先级的Global Dispatch Queue,或是准备用于Serial Dispatch Queue
+ 的Global Dispatch Queue
+ 
+ 5>Global Dispatch Queue的8种优先级：
+ .High priority
+ .Default Priority
+ .Low Priority
+ .Background Priority
+ .High Overcommit Priority
+ .Default Overcommit Priority
+ .Low Overcommit Priority
+ .Background Overcommit Priority
+附有Overcommit的Global Dispatch Queue使用在Serial Dispatch Queue中，不管系统状态如何，都会强
+ 制生成线程的 Dispatch Queue。
+ 这8种Global Dispatch Queue各使用1个pthread_workqueue,GCD初始化时，使用pthread_workqueue_create_np()
+ 生成pthread_workqueue 
+ pthread_workqueue使用bsdthread_register和workq_open系统调用，在初始化XUN内核的workqueue之后获取workqueue
+ 信息
+ 
+ 6>XUN内核的4种workqueue 的优先级，与Global Dispatch Queue的4种执行优先级相同
+ .WORKQUEUE_HIGH_PRIQUEUE
+ .WORKQUEUE_DEFAULT_PRIQUEUE
+ .WORKQUEUE_LOW_PRIQUEUE
+ .WORKQUEUE_BG_PRIQUEUE
+ 
+ 7>Dispatch Queue中执行Block过程
+ 当在Global Dispatch Queue中执行Block时，libdispatch 从Global Dispatch Queue自身的FIFO队列中取
+ 出Dispatch Continuation,调用pthread_workqueue_additem_np(),将该Global Dispatch Queue自身、符
+ 合优先级的workqueue信息以及为执行Dispatch Continuation的回调函数等传递给参数。
+ thread_workqueue_additem_np()使用workq_kernreturn系统调用，通知workqueue啬应当执行的项目，根据该
+ 通知，XUN内核基于系统状态判断是否要生成线程，如果是Overcommit优先级的Global Dispatch Queue，workqueue
+ 则始终生成线程。
+ .该线程虽然与iOS和OS X中通常使用的线程大致相同，但是有一部分pthread API不能使用
+ .workqueue生成的线程在实现用于workqueue的线程计划表中运行，与一般线程的上下文切不同，这里也隐藏着使用GCD的
+ 原因
+ .workqueue的线程执行pthread_workqueue(),该函数用libdispatch的回调函数，在回调函数中执行执行加入到
+ Dispatch Continuatin的Block
+ .Block执行结束后，进行通知Dispatch Group结束，释放Dispatch Continuation等处理，开始准备执行加入到Dispatch Continuation中的下一个Block
+ 
+ */
+
+
 /*
  1.多线程
  由于一个CPU一次只能执行一个命令，不能执行某处分开的并列的两个命令，因此通过CPU执行的CPU命令列就
@@ -203,11 +273,110 @@
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk5 for reading");});
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk6 for reading");});
     
-    //10.死锁
+    //死锁下面几种情况：
+/*
+    //1>
     dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁1");});
+    //2>
     dispatch_async(mainDispatchQueue, ^{
         dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁2");});
     });
+    //3>
+    dispatch_async(serialDispatchQueue, ^{
+        dispatch_sync(serialDispatchQueue, ^{NSLog(@"死锁3");});
+    });
+ */
+    
+    //10.dispatch_apply()
+    //0>
+    dispatch_apply(10, globalDispatchQueueDefault, ^(size_t index) {
+        NSLog(@"dispatch_apply = %zu",index);
+    });
+    NSLog(@"dispatch_apply() done.");
+    
+    //1>
+    NSArray *array = self.datas;
+    dispatch_apply(self.datas.count, globalDispatchQueueDefault, ^(size_t index){
+       NSLog(@"index= %zu,element = %@",index,array[index]);
+    });
+    
+    //3>在Global Dispatch Queue中非同步执行
+    dispatch_async(globalDispatchQueueDefault, ^{
+        //Global Dispatch Queue 等待dispatch_apply函数中全部处理执行结束
+        dispatch_apply(self.datas.count, globalDispatchQueueDefault, ^(size_t index){
+            NSLog(@"index= %zu,element = %@",index,array[index]);
+        });
+        //dispatch_apply()中处理全部执行结束
+        
+        //在Main Dispatch Queue中执行处理用户界用更新等
+        dispatch_async(mainDispatchQueue, ^{NSLog(@"在Main Dispatch Queue中执行处理用户界用更新等...,Done");});
+    });
+    
+    //11.dispatch_suspend()/dispatch_resume()
+    /*
+     这些函数对已经执行的处理没有影响，挂起后，追加到Dispatch Queue中但尚未执行的处理在些之扣停止执行，
+     而恢复则使用这些处理能够继续执行。
+     */
+    dispatch_suspend(globalDispatchQueueDefault);
+    dispatch_resume(globalDispatchQueueDefault);
+    
+    
+    //12.dispatch Semaphore
+    
+    //Dispatch Semaphore的计数初始值设定为1,保证可访问的NSArray类的对象的线程同时只能有1个
+     dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+    //1>
+    {
+        NSMutableArray *array = [NSMutableArray new];
+        for (int i = 0; i< 100000; i++) {
+            
+            dispatch_async(globalDispatchQueueDefault, ^{
+                
+                //等待Dispatch Semaphore,一直等待，直到Dispatch Semaphore的计数值达到大于等于1。
+                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+                
+                /*
+                 Dispatch Semaphore的计数值达到大于等于1,所以将Dispatch Semaphore的计数值减去1
+                 dispatch_semaphore_wait()执行返回。即执行到此进的Dispatch Semaphore的计数值恒
+                 为0,由于可访问NSArray类对象的线程只有1个，因此可安全地进行更新。
+                 */
+                [array addObject:@(i)];
+                
+                /*
+                 排他控制处理结束，所以通过dispatch_semaphore_signal()将Dispatch Semaphore的计
+                 数值加1。如果有通过dispatch_semaphore_wait通过()等待Dispatch Semaphore和计数值
+                 增加的线程，就由最先等待的线程执行。
+                 */
+                dispatch_semaphore_signal(semaphore);
+            });
+        }
+    }
+#if !OS_OBJECT_USE_OBJC
+    dispatch_release(semaphore);
+#endif
+    
+    //13.dispatch_once()
+    //更新标志变量
+    static int initialized = NO;
+    if(initialized == NO){
+        initialized = YES;
+    }
+    
+    //可通过dispatch_once()简化
+    static dispatch_once_t pred;
+    dispatch_once(&pred,^{
+        initialized = YES;
+    });
+    /*
+    通过dispatch_once(),该源代码即使在多线程环境下执行，可保证100%安全
+    之前的源代码在大多数情况下也是安全的，但在多核CPU中，在正在更新表示是否初始化的标志变量时读取，就有
+    可能多次执行初始化处理。而用dispatch_once()初始化就不必担心这样的问题。
+    这就是所说的单例模式，在生成单例对象时使用。
+     */
+}
+
+- (NSArray *)datas{
+    return @[@"obj1",@"obj2",@"obj3",@"obj4",@"obj5"];
 }
 
 dispatch_time_t getDispatchTimeByDate(NSDate *date){
@@ -418,12 +587,239 @@ dispatch_time_t getDispatchTimeByDate(NSDate *date){
  做任何等待。
  dispatch_sync():将指定的Block同步地追加到指定的Dispatch Queue中，在追加Block结束之前，
  dispatch_sync()会一直等待。
+ 
  一旦调用dispatch_sync()，那么在指定的处理执行结束之前，该函数不会返回，dispatch_sync()可简化
  源代码，也可说是简易版的dispatch_group_wait();
  
+ 在编程中，最好在深思熟虑、最好希望达到的目的之后再使用dispatch_sync()等同步等待处理执行的API,
+ 因为使用这种API时，稍有不慎就倒导致程序死锁。
+ 
+ //1>在主线程中执行死锁：Main Dispatch Queue即主线程中执行指定的Block，并等待执行结束。而其实
+ 在主线程中正在执行这些源代码，所以无法执行追加到Main Dispatch Queue的Block
+ dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁1");});
+ 
+ //2>Main Dispatch Queue 中执行的Block等待Main Dispatch Queue中要执行的Block执行结束。
+ dispatch_async(mainDispatchQueue, ^{
+ dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁2");});
+ });
+ //3>
+ dispatch_async(serialDispatchQueue, ^{
+ dispatch_sync(serialDispatchQueue, ^{NSLog(@"死锁3");});
+ });
  
  */
 
+#pragma mark -dispatch_apply()
+//12.dispatch_apply()
+/*
+1>dispatch_apply()是dispathc_sync()和Dispatch Group的关联API。该函数按指定的次数将指定的
+ Block追加到指定的Dispatch Queue中，并等待全部处理执行结束。
+ 
+ dispatch_apply(10, globalDispatchQueueDefault, ^(size_t index) {
+ NSLog(@"dispatch_apply = %zu",index);
+ });
+ NSLog(@"dispatch_apply() done.");
+ 输出：
+ dispatch_apply = 4
+ dispatch_apply = 1
+ dispatch_apply = 0
+ ...
+ dispatch_apply() done.
+ Global Dispatch Queue中执行处理，所以各个处理的执行时间不定，但是输出结果中最后的done必定在最后
+ 的位置上，这是因为dispatch_apply()会等待全部处理执行结束
+ 
+ 2> dispatch_apply(10, globalDispatchQueueDefault, ^(size_t index)）
+ 第一个参数是复复次数，第二个参数为追加对象的Dispatch Queue,第三个参数为追加的处理，是带有参数的Block,
+ 与其他出现的例子不同，这是为了按第一个参数重复追加Block并区分各个Block而使用。
+ eg:对数组对象的所有元素执行片理是，不必一个一个编写for循环部分：
+ 
+ NSArray *array = self.datas;
+ dispatch_apply(self.datas.count, globalDispatchQueueDefault, ^(size_t index){
+ NSLog(@"index= %zu,element = %@",index,array[index]);
+ });
+ 
+ 3>dispatch_apply()与dispatch_sync()函数相同，会等待处理执行结束，因此推荐在dispatch_async()
+ 中非同步地执行dispatch_apply()
+ 
+ dispatch_async(globalDispatchQueueDefault, ^{
+ //Global Dispatch Queue 等待dispatch_apply函数中全部处理执行结束
+ dispatch_apply(self.datas.count, globalDispatchQueueDefault, ^(size_t index){
+ NSLog(@"index= %zu,element = %@",index,array[index]);
+ });
+ //dispatch_apply()中处理全部执行结束
+ 
+ //在Main Dispatch Queue中执行处理用户界用更新等
+ dispatch_async(mainDispatchQueue, ^{NSLog(@"在Main Dispatch Queue中执行处理用户界用更新等...,Done");});
+ });
+ 
+ */
+
+#pragma mark -dispatch_suspend()/dispatch_resume()
+//12.dispatch_suspend()/dispatch_resume()
+
+/*
+ 当追加大量处理到Dispatch Queue时，在追加处理的过程中，有时希望不执行已追加的处理，如演算结果被
+ Block截获时，一些处理会对这个演算结果造成影响。
+ 在这种情况下，只要挂起Dispatch Queue即可，当可以执行时再恢复
+ 
+ 挂起指定的Dispatch Queue:
+ dispatch_suspend(globalDispatchQueueDefault);
+ 
+ 恢复指定的Dispatch Queue:
+ dispatch_resume(globalDispatchQueueDefault);
+ 
+ 这些函数对已经执行的处理没有影响，挂起后，追加到Dispatch Queue中但尚未执行的处理在些之扣停止执行，
+ 而恢复则使用这些处理能够继续执行。
+ */
+
+#pragma mark -dispatch Semaphore
+//12.dispatch Semaphore
+
+/*
+ 当并行执行的处理更新数据时，会产生数据不一致的情况，有时应用程序还会异常结束，虽然使用Serial Dispatch Queue
+ 和dispatch_barrier_async()可避免这类问题，但有必要进行更细粒度的排他控制
+ 
+ 1>dispatch Semaphore是持有计数的信号，该计数是多线程编程中的计数类型信号，所谓信号，类似于过马咱时常
+ 用的手旗，可以通过是举起手旗，不可通过时放下手旗。而在Dispatch Semaphore中，使用计数来实现该功能。计
+ 数为0时等待，计数为1或大于1时，减去1而不等待。
+ 
+ 2>dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);参数表示计数的初始值为1,
+ 从create可以看出，该函数与Dispatch Queue和Dispatch Group一样，必须通过dispatch_release()
+ 释放，也可通过dispatch_retain()持有。
+ 
+ 3>dispatch_semaphore_wait(semaphore,DISPATCH_TIME_FOREVER);
+ dispatch_semaphore_wait()等待Dispatch Semaphore的计数值达到大于或等于1。当计数值大于等于1,或
+ 者在待机中计数大于等于1时，对该计数进行减法并从dispatch_semaphore_wait()返回;第二个参数与
+ dispatch_group_wait()相同，由dispatch_time_t类型值指定等待时间。另外dispatch_semaphore_wait()
+ 的返回值也与dispatch_group_wait()相同。
+ //Dispatch Semaphore的计数初始值设定为1,保证可访问的NSArray类的对象的线程同时只能有1个
+ dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
+ //1>
+ {
+ NSMutableArray *array = [NSMutableArray new];
+ for (int i = 0; i< 100000; i++) {
+ 
+ dispatch_async(globalDispatchQueueDefault, ^{
+ 
+ //等待Dispatch Semaphore,一直等待，直到Dispatch Semaphore的计数值达到大于等于1。
+ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+ 
+ 
+ Dispatch Semaphore的计数值达到大于等于1,所以将Dispatch Semaphore的计数值减去1
+ dispatch_semaphore_wait()执行返回。即执行到此进的Dispatch Semaphore的计数值恒
+ 为0,由于可访问NSArray类对象的线程只有1个，因此可安全地进行更新。
+ [array addObject:@(i)];
+
+
+ 排他控制处理结束，所以通过dispatch_semaphore_signal()将Dispatch Semaphore的计
+ 数值加1。如果有通过dispatch_semaphore_wait通过()等待Dispatch Semaphore和计数值
+ 增加的线程，就由最先等待的线程执行。
+
+ dispatch_semaphore_signal(semaphore);
+});
+}
+}
+#if !OS_OBJECT_USE_OBJC
+dispatch_release(semaphore);
+#endif
+ */
+
+
+#pragma mark -dispatch_once()
+//12.dispatch_once()
+/*
+ dispatch_once()是保证在应用程序执行中只执行一次指定处理的API,下面这种经常出现的用来进行初始化的
+ 源代码可通过dispatch_once()简化
+ static int initialized = NO;
+ if(initialized == NO){
+    initialized = YES;
+ }
+ 
+ 如果用dispatch_once(),则源代码写为：
+ static dispatch_once_t pred;
+ dispatch_once(&pred,^{
+    initialized = YES;
+ });
+ 通过dispatch_once(),该源代码即使在多线程环境下执行，可保证100%安全
+ 之前蝗源代码在大多数情况下也是安全的，但在多核CPU中，在正在更新表示是否初始化的标志变量时读取，就有
+ 可能多次执行初始化处理。而用dispatch_once()初始化就不必担心这样的问题。
+ 这就是所说的单例模式，在生成单例对象时使用。
+ */
+
+#pragma mark -Dispatch I/O
+//12.Dispatch I/O
+/*
+ 在读取较大文件时，如果将文件分成合适的大小并使用Global Dispatch Queue并列读取的话，应该会比一般的
+ 读取速度快不少。现在的输入/输出硬件已经可以做到一次使用多个线程更快地并列读取了。能实现这一功能的就是
+ Dispatch I/O和Dispath Data。
+ 通过Dispatch I/O读写文件时，使用Global Dispatch Queue将文件按某个大小read/write
+ 如下：
+ */
+- (void)readByteBySize{
+    dispatch_queue_t queue = dispatch_queue_create("blog.csdn.com/baitxaps", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{/*读取 0-8181 字节*/});
+    dispatch_async(queue, ^{/*读取 8181-15502 字节*/});
+    dispatch_async(queue, ^{/*读取 15503-23335 字节*/});
+    dispatch_async(queue, ^{/*读取 23336-555555 字节*/});
+    dispatch_async(queue, ^{/*读取 555555-65535 字节*/});
+}
+/*
+ 像上面这样，将文件分割为一块一块地进行读取处理。分割读取的数据通过使用Dispatch Data可更为简单地进行结合和分割
+ 苹果使用Dispatch I/O和Dispath Data。
+ */
+
+
+/*
+ Apple System Log API 用的源代码(libc-763.11 gen/asl.c)
+ */
+- (void)filesReader{
+    dispatch_queue_t  pipe_q = dispatch_queue_create("PipeQ", NULL);
+    dispatch_fd_t fd;//
+    
+    //生成Dispatch I/O,发生错误时用来执行处理的Block,以及执行该Block的Dispatch Queue
+    dispatch_io_t pipe_channel = dispatch_io_create(DISPATCH_IO_STREAM, fd, pipe_q, ^(int error) {
+        close(fd);
+    });
+    
+   //char *out_fd = fdpair[1];
+    //设定一次读取的分割大小
+    dispatch_io_set_low_water(pipe_channel, SIZE_MAX);
+    dispatch_data_t pipeData;//
+    
+    //使用Global Dispatch Queue并列读取
+    dispatch_io_read(pipe_channel, 0, SIZE_MAX, pipe_q, ^(bool done, dispatch_data_t data, int error) {
+        if (error == 0) {
+            size_t len = dispatch_data_get_size(pipeData);
+            if (len>0) {
+                const char *bytes = NULL;
+                char *encoede;
+                
+                dispatch_data_t md = dispatch_data_create_map(pipeData, (const void **)&bytes, &len);
+               // encoede = asl_core_encode_buffef(bytes,len);//
+                //asl_set((aslmsg)merged_msg,ASL_KEY_AUX_DATA,encoede);
+                free(encoede);
+               // _asl_send_message(NULL,merged_msg,-1,NULL);
+               // asl_msg_release(merged_msg);
+#if !OS_OBJECT_USE_OBJC
+                dispatch_release(md);
+#endif
+            }
+        }
+        if (done) {
+            //dispatch_semaphore_signal(sem);
+#if !OS_OBJECT_USE_OBJC
+            dispatch_release(pipe_channel);
+            dispatch_release(pipe_q);
+            
+#endif
+        }
+    });
+}
+
+#pragma mark -Dispatch Source
+//12.Dispatch Source
+/*
+ */
 
 //AFNetworking 中RunLoop的创建
 - (void)netWorkRequestThreadEntryPoint:(id)__unused  object{
