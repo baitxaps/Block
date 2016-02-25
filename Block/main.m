@@ -30,8 +30,8 @@ int main(int argc, const char * argv[]) {
            number, integer, fraction);
     //block
     block *b = [block new];
-    [b testBlk1];
-    [b testBlk2];
+    [b BlockTest1];
+    [b BlockTest2];
     
     //polymorephic
     initPolymorephic();

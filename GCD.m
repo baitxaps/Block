@@ -203,6 +203,11 @@
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk5 for reading");});
     dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk6 for reading");});
     
+    //10.死锁
+    dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁1");});
+    dispatch_async(mainDispatchQueue, ^{
+        dispatch_sync(mainDispatchQueue, ^{NSLog(@"死锁2");});
+    });
 }
 
 dispatch_time_t getDispatchTimeByDate(NSDate *date){
