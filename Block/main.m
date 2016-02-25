@@ -21,7 +21,7 @@
 int main(int argc, const char * argv[]) {
     //GCD
     GCD *gcd = [GCD new];
-    [gcd testConcurrentQueue];
+    [gcd GCDTest];
     
     double fraction, integer;
     double number = 100000.567;

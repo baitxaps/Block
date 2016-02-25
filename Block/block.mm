@@ -58,9 +58,9 @@ struct class_t{
     uintptr_t data_NEVER_USE;
 };
 
-#pragma mark - blockTest
+#pragma mark - BlockTest1
 //二、Block：带有自动变量(局部变量)的匿名函数(不带有名称的函数)
-- (void)testBlk1{
+- (void)BlockTest1{
     
     //1.Block语法
     //^ 返回值类型 参数列表  表达式
@@ -187,7 +187,7 @@ blk_t stackblk(int rate){
 
 #pragma mark - Block测试2
 
-- (void)testBlk2{
+- (void)BlockTest2{
     
     blk_t blk = ^int (int a){
         return a +1;
@@ -1006,7 +1006,7 @@ struct __Block_byref_obj_0 {
  输出也全为0，这是因为即使附加了__block说明符，附有__strong修饰符的变量array也会在该变量作用
  域结束的同时被释放废弃，nil被赋值在附有__weak修饰符的变量array2中
  
- 5>lock测试2中 第8点
+ 5>Block测试2中 第8点
  赋值给附__unsafe_unretained修饰符变量的对象在通过该变量使用时，如果没有确保其确实存在，
  那么应用程序就会崩溃.__unsafe_unretained修饰符的变量只不过与指针相同，所以不管是在Block中使用还是附加到__block
  变量中，也不会像__strong修饰符或__weak修饰符那样进行处理，因此在使用附有__unsafe_unretained修饰符

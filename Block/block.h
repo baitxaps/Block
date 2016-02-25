@@ -12,8 +12,8 @@ typedef int(^blk_t)(int);
 int func(blk_t blk,int rate);
 
 @interface block : NSObject
-- (void)testBlk1;
-- (void)testBlk2;
+- (void)BlockTest1;
+- (void)BlockTest2;
 
 - (void)essenceBlock;
 - (void)staticBlock;

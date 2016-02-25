@@ -8,6 +8,7 @@
 
 #import "GCD.h"
 
+
 @implementation GCD
 /*
  1.多线程
@@ -107,9 +108,9 @@
  该名称中含有release,由此可以推测出相应地也存在dispatch_retain();
  */
 
-#pragma mark - testConcurrentQueue
+#pragma mark - GCDTest
 
-- (void)testConcurrentQueue{
+- (void)GCDTest{
     //0.
     dispatch_queue_t serialDispatchQueue = dispatch_queue_create("blog.csdn.net/baitxaps", NULL);
     //1.
@@ -192,6 +193,15 @@
     }else{
         //属于Dispatch Group的某一个处理还在执行中
     }
+    
+    //9.dispatch_barrier_async()
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk0 for reading");});
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk1 for reading");});
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk2 for reading");});
+    dispatch_barrier_async(concurrentDispatchQueue, ^{NSLog(@"blk3 for writing");});
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk4 for reading");});
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk5 for reading");});
+    dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk6 for reading");});
     
 }
 
@@ -372,26 +382,132 @@ dispatch_time_t getDispatchTimeByDate(NSDate *date){
 
 #pragma mark -dispatch_barrier_async
 //10.dispatch_barrier_async
+/*
+1> 比如访问数据库或文件，为了高效率进行访问，读取处理追加到Concurrent Dispatch Queue中，写入处
+ 理在任一个读取处时没有执行的状态下，追加到Serial Dispatch Queue中即可(在写入处理结束之前，读
+ 取处理不可执行）,虽然利用Dispatch Group和dispatch_set_target_queue()也可实现，但是源代码会
+ 很复杂。
+ 2>dispatch_barrier_async()同dispatch_queue_create()生成的Concurrent Dispatch Queue一
+ 起用，首先，dispatch_queue_create()生成Concurrent Dispatch Queue，在dispatch_async中追加
+ 读处理，在blk2，blk4间加入写入处理，并将写入的内容读到blk4处理以及之后的处理中。
+ 
+ 3>dispatch_barrier_async()会等侍追加到Concurrent Dispatch Queue上的并行的处理全部结束之后，再
+ 将指定的处理追加到该Concurrent Dispatch Queue中。然后在由dispatch_barrier_async()追加的处理执行
+ 完毕后，Concurrent Dispatch Queue才恢复为一般的动作，追加到该Concurrent Dispatch Queue的处理又
+ 开始并行执行。
+ 
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk0 for reading");});
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk1 for reading");});
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk2 for reading");});
+ dispatch_barrier_async(concurrentDispatchQueue, ^{NSLog(@"blk3 for writing");});
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk4 for reading");});
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk5 for reading");});
+ dispatch_async(concurrentDispatchQueue, ^{NSLog(@"blk6 for reading");});
+ */
+
+
+#pragma mark -dispatch_sync
+//11.dispatch_sync
+/*
+ dispatch_async():将指定的Block非同步地追加到指定的Dispatch Queue中，dispatch_async()不
+ 做任何等待。
+ dispatch_sync():将指定的Block同步地追加到指定的Dispatch Queue中，在追加Block结束之前，
+ dispatch_sync()会一直等待。
+ 一旦调用dispatch_sync()，那么在指定的处理执行结束之前，该函数不会返回，dispatch_sync()可简化
+ 源代码，也可说是简易版的dispatch_group_wait();
+ 
+ 
+ */
+
+
+//AFNetworking 中RunLoop的创建
+- (void)netWorkRequestThreadEntryPoint:(id)__unused  object{
+    @autoreleasepool {
+        [[NSThread currentThread]setName:@"AFNetworking"];
+        
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+        [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+        
+        [runLoop run];
+    }
+}
+
+
+- (NSThread *)networkRequestThread{
+    static NSThread *_networkRequestThread = nil;
+    static dispatch_once_t oncePreadicate;
+    dispatch_once(&oncePreadicate, ^{
+        _networkRequestThread = [[NSThread alloc]initWithTarget:self selector:@selector(netWorkRequestThreadEntryPoint:) object:nil];
+        [_networkRequestThread start];
+    });
+    return _networkRequestThread;
+}
 
 
 
+//接到crash的singal 后后动重启RunLoop
+- (void)restartRuningRunLoop{
+    CFRunLoopRef runloop = CFRunLoopGetCurrent();
+    NSArray *allModes = CFBridgingRelease(CFRunLoopCopyAllModes(runloop));
+    while(1){
+        for(NSString *mode in allModes){
+            CFRunLoopRunInMode((CFStringRef)mode,0.001,false);
+        }
+    }
+}
 
 
+//TableView 延迟加载图片新思路
+#if TARGET_OS_IPHONE
+UIImageView *imageView;
+- (void)delayLoadingImage{
+    
+    UIImage *downLoadImage = nil;
+    [imageView performSelector:@selector(setImage:)
+                    withObject:downLoadImage
+                    afterDelay:0
+                       inModes:@[NSDefaultRunLoopMode]]
+}
+#elif TARGET_OS_MAC
+//...
+#endif
 
+- (void)content:(NSString *(^)(NSString * content))block{
+    
+}
 
+//异步测试
+- (void)runUnitlBlock:(BOOL(^)())block timeout:(NSTimeInterval)timeout{
+    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
+    do{
+        CFTimeInterval quantum = 0.0001;
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode,quantum,false);
+    }while ([timeoutDate timeIntervalSinceNow]>0 &&!block()) ;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+//异步测试升级
+- (BOOL)upgradeRunUnitlBlock:(BOOL(^)())block timeout:(NSTimeInterval)timeout{
+    __block Boolean fulfilled = NO;
+    void(^beforeWaiting)(CFRunLoopObserverRef observer,CFRunLoopActivity activity)=
+    ^(CFRunLoopObserverRef observer,CFRunLoopActivity activity){
+        fulfilled = block();
+        if (fulfilled) {
+            CFRunLoopStop(CFRunLoopGetCurrent());
+        }
+    };
+    
+    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(NULL,\
+                                  kCFRunLoopBeforeWaiting, true, 0, beforeWaiting);
+    
+    CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopDefaultMode);
+    
+    //run
+    CFRunLoopRunInMode(kCFRunLoopDefaultMode, timeout, false);
+    CFRunLoopRemoveObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopDefaultMode);
+    CFRelease(observer);
+    
+    return fulfilled;
+}
 
 
 
