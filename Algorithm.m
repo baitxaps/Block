@@ -408,7 +408,6 @@ void execCmd(){
     execContainer();
 }
 
-
 //字符与集合的深浅拷贝
 void execContainer(){
     /*
@@ -468,6 +467,51 @@ void execContainer(){
     fraction = modf(number, &integer);
     printf("The whole and fractional parts of %lf are %lf and %lf\n",
            number, integer, fraction);
+     
+     dataSort();
 }
+
+void dataSort(){
+    NSArray *datas = @[@9,@5,@1,@8];
+    
+    /* @selector --> 方法选择器, 获取方法名的意思.
+     * compare: --> 数组中元素的方法(元素是字符串, compare是字符串的一个方法)
+     */
+    
+    NSArray *sortedArray1 = [datas sortedArrayUsingSelector:@selector(compare:)];
+    NSLog(@"sortedArray1排序后:%@",sortedArray1);
+    
+    NSArray *sortArray2 = [datas sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        
+        NSComparisonResult result = [obj1 compare:obj2];
+        switch (result) {
+            case NSOrderedAscending://如果是升序，那么就表示前边的小，那么我们就告知它需要降序
+                return NSOrderedDescending;
+                break;
+            case NSOrderedDescending://如果是降序，那么就表示前边的元素大，我们就告知它是升序，就不需要交换了
+                return NSOrderedAscending;
+                
+            case NSOrderedSame://如果是相等，那么我们就不需要排序了，也就告知它确实是相等的就可以
+                return NSOrderedSame;
+            default:
+                break;
+        }
+    }];
+    
+   NSLog(@"sortedArray2排序后:%@",sortArray2);
+}
+
++ (instancetype)shareInstance{
+    static Algorithm *intance = NULL;
+    dispatch_once_t prep;
+    dispatch_once(&prep,^{
+        intance = [[self alloc]init];
+    });
+    return intance;
+}
+
+
+
+
 
 @end
