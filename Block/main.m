@@ -27,11 +27,6 @@ int main(int argc, const char * argv[]) {
     GCD *gcd = [GCD new];
     [gcd GCDTest];
     
-    double fraction, integer;
-    double number = 100000.567;
-    fraction = modf(number, &integer);
-    printf("The whole and fractional parts of %lf are %lf and %lf\n",
-           number, integer, fraction);
     //block
     block *b = [block new];
     [b BlockTest1];

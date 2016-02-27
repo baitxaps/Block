@@ -404,12 +404,13 @@ void execCmd(){
     
     free(str_);
     
-    containerExec();
+    execFraction();
+    execContainer();
 }
 
 
 //字符与集合的深浅拷贝
-void containerExec(){
+void execContainer(){
     /*
      0.字符串类
      如果对一不可变对象复制，copy是指针复制（浅拷贝）,mutableCopy就是对象复制（深拷贝）。
@@ -461,6 +462,12 @@ void containerExec(){
     
 }
 
-
+ void execFraction(){
+    double fraction, integer;
+    double number = 100000.567;
+    fraction = modf(number, &integer);
+    printf("The whole and fractional parts of %lf are %lf and %lf\n",
+           number, integer, fraction);
+}
 
 @end
