@@ -98,5 +98,4 @@ UIImageView *imageView;
     return fulfilled;
 }
 
-
 @end

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface Algorithm : NSObject
+
+
 int  maxUnique(char str[]);
 char *getRandomString(int len);
 char *maxUniqueString(char * str);
@@ -24,4 +26,5 @@ int minPath(int (*t)[4],int len);
 int  maxLength(int arr1[],int len1,int arr2[],int len2);
 
 void execCmd();
+
 @end

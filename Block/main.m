@@ -17,8 +17,12 @@
 #import <string.h>
 #import "block.h"
 #import "GCD.h"
+#import "Algorithm.h"
 
 int main(int argc, const char * argv[]) {
+    //Algorithm
+    execCmd();
+
     //GCD
     GCD *gcd = [GCD new];
     [gcd GCDTest];

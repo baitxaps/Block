@@ -193,11 +193,13 @@ int  maxLength(int arr1[],int len1,int arr2[],int len2)
 }
 
 
-char *repaceSpace(char str[],int length)
+char *repaceSpace(char *str,int length)
 {
+    char *tmp = (char*)malloc(sizeof(char)*length +1);
+    strcpy(tmp, str );
     int count=0,newLength=0;
     
-    for (int i =0; str[i]; i++) {
+    for (int i =0; tmp[i]; i++) {
         if (str[i] == ' ') {
             count ++;
         }
@@ -205,19 +207,19 @@ char *repaceSpace(char str[],int length)
     newLength = count * 2 +length;
     
     for (int i = length -1; i >=0;i--) {
-        if (str[i]== ' ') {
-            str[newLength -1]='0';
-            str[newLength -2]='2';
-            str[newLength -3]='%';
+        if (tmp[i]== ' ') {
+            tmp[newLength -1]='0';
+            tmp[newLength -2]='2';
+            tmp[newLength -3]='%';
             newLength -=3;
             
         }else{
-            str[newLength -1] =str[i];
+            tmp[newLength -1] =tmp[i];
             newLength --;
-            printf("%c\n",str[newLength -1]);
+            printf("%c\n",tmp[newLength -1]);
         }
     }
-    return str;
+    return tmp;
 }
 
 char *zipString(char str[])
@@ -397,9 +399,68 @@ void execCmd(){
      加上空格字符总数×2,就是新的字符串的长度
      */
     char *str_ = "hello world!";
-    
+    str_ =repaceSpace(str_,(int)strlen(str_));
     printf("%s\n",repaceSpace(str_,(int)strlen(str_)));
     
+    free(str_);
+    
+    containerExec();
 }
+
+
+//字符与集合的深浅拷贝
+void containerExec(){
+    /*
+     0.字符串类
+     如果对一不可变对象复制，copy是指针复制（浅拷贝）,mutableCopy就是对象复制（深拷贝）。
+     如果是对可变对象复制，都是深拷贝，但是copy返回的对象是不可变的
+     */
+    
+    NSString *sstring         = @"sstring";
+    NSString *sCopy           = [sstring copy];
+    NSMutableString *smCopy   = [sstring mutableCopy];//系统为其分配了新内存
+    [smCopy appendString:@"_string"];
+    NSLog(@"sstring = %p,sCopy = %p,smCopy= %p",sstring,sCopy,smCopy);
+    
+    NSMutableString *ms        = [NSMutableString stringWithString: @"mutableString"];
+    NSString *msCopy           = [ms copy];//NSMutableString，copy后为不可变
+    NSMutableString *mmCopy    = [ms copy];
+    smCopy                     = [ms mutableCopy];
+    //[mStringCopy appendString:@"mm"];//不改变 ,不能在后拼接
+    [smCopy appendString:@"_appendString"];
+    NSLog(@"msCopy = %p,mmCopy = %p,smCopy= %p", msCopy,mmCopy,smCopy);
+    
+    
+    /*
+     copy返回不可变对象，mutablecopy返回可变对象
+     copy操作只指针的复制，两对象都指向同一地址
+     mutablecopy操作重新分配一新地址，但集合中元素都是指针复制，中元素的改变，会全部发生变化
+     对于容器而言，其元素对象始终是指针复制，如果需要元素对象也是对象复制，就需要实现深拷贝
+     */
+    //1
+    NSArray *sourceDatas        = @[@[@"obj1",@"obj1"],@[@"obj3",@"obj4"]];
+    NSArray *destDatasCopy      = [sourceDatas copy];
+    NSMutableArray *destDatasMutableCopy = [sourceDatas mutableCopy];
+    NSLog(@"sourceDatas = %p,destDatasCopy = %p,destDatasMutableCopy= %p",\
+          sourceDatas,destDatasCopy,destDatasMutableCopy);
+    
+    //2
+    NSArray *objs     = @[[NSMutableString stringWithString:@"obj1"],@"obj2",@"obj3"];
+    NSArray *objsCopy = [objs copy];
+    NSMutableArray *objsMutableCopy = [objs mutableCopy];
+    [[objs objectAtIndex:0] appendString:@"_1"];
+    NSLog(@"objs=%@,objCopy=%@,objsMutableCopy =%@",objs,objsCopy,objsMutableCopy);
+    
+    //3.
+    NSArray *copyItemsArray =[[NSArray alloc] initWithArray: objs copyItems: YES];
+    NSArray* unarchiver     = [NSKeyedUnarchiver unarchiveObjectWithData:
+                               [NSKeyedArchiver archivedDataWithRootObject:objs]];
+    
+    [[objs objectAtIndex:0]appendString:@"_2"];
+    NSLog(@"objs=%@,copyItemsArray=%@,unarchiver=%@",objs,copyItemsArray,unarchiver);
+    
+}
+
+
 
 @end
