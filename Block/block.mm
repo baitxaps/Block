@@ -160,6 +160,7 @@ struct class_t{
     }
 }
 
+
 blk_t f(){
     return ^(int count){return count +1;};
 };

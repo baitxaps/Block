@@ -21,6 +21,7 @@
 		7732973E1C7C48D6001F853F /* struct.c in Sources */ = {isa = PBXBuildFile; fileRef = 773297341C7C48D6001F853F /* struct.c */; };
 		7732973F1C7C48D6001F853F /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 773297361C7C48D6001F853F /* thread.c */; };
 		773297411C7C493D001F853F /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 773297401C7C493D001F853F /* block.mm */; };
+		77A541761D02CE8D0089474D /* CPlusplus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A541741D02CE8D0089474D /* CPlusplus.cpp */; };
 		77E604111C7C5B6A00D9325E /* GCD.m in Sources */ = {isa = PBXBuildFile; fileRef = 77E604101C7C5B6A00D9325E /* GCD.m */; };
 		77FA267A1C7F45BB008C3721 /* runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = 77FA26791C7F45BB008C3721 /* runloop.m */; };
 /* End PBXBuildFile section */
@@ -66,6 +67,8 @@
 		773297371C7C48D6001F853F /* thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thread.h; path = Block/thread.h; sourceTree = "<group>"; };
 		773297401C7C493D001F853F /* block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = block.mm; sourceTree = "<group>"; };
 		773297421C7C4949001F853F /* block.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
+		77A541741D02CE8D0089474D /* CPlusplus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlusplus.cpp; sourceTree = "<group>"; };
+		77A541751D02CE8D0089474D /* CPlusplus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CPlusplus.hpp; sourceTree = "<group>"; };
 		77E6040F1C7C5B6A00D9325E /* GCD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCD.h; sourceTree = "<group>"; };
 		77E604101C7C5B6A00D9325E /* GCD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCD.m; sourceTree = "<group>"; };
 		77FA26781C7F45BB008C3721 /* runloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = runloop.h; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		773297151C7C4870001F853F = {
 			isa = PBXGroup;
 			children = (
+				77A541731D02CE6A0089474D /* C++ */,
 				773297211C7C4870001F853F /* main.m */,
 				77FA26771C7F45A2008C3721 /* Runloop */,
 				7724A1C51C7C69E500AD740E /* Algorithm */,
@@ -134,6 +138,15 @@
 				773297401C7C493D001F853F /* block.mm */,
 			);
 			path = Block;
+			sourceTree = "<group>";
+		};
+		77A541731D02CE6A0089474D /* C++ */ = {
+			isa = PBXGroup;
+			children = (
+				77A541741D02CE8D0089474D /* CPlusplus.cpp */,
+				77A541751D02CE8D0089474D /* CPlusplus.hpp */,
+			);
+			name = "C++";
 			sourceTree = "<group>";
 		};
 		77E6040D1C7C5AE700D9325E /* GCD */ = {
@@ -247,6 +260,7 @@
 				7724A1C81C7C6A3300AD740E /* Algorithm.m in Sources */,
 				773297411C7C493D001F853F /* block.mm in Sources */,
 				7732973E1C7C48D6001F853F /* struct.c in Sources */,
+				77A541761D02CE8D0089474D /* CPlusplus.cpp in Sources */,
 				7724A1B91C7C657000AD740E /* server_socket.m in Sources */,
 				773297221C7C4870001F853F /* main.m in Sources */,
 			);

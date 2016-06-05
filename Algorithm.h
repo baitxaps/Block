@@ -10,6 +10,7 @@
 
 @interface Algorithm : NSObject
 
++ (instancetype)shareInstance;
 
 int  maxUnique(char str[]);
 char *getRandomString(int len);
