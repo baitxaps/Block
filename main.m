@@ -6,33 +6,40 @@
 //  Copyright © 2016年 hairong chen. All rights reserved.
 //
 
-#include "link.h"
-#include "queue.h"
-#include "struct.h"
-#include "stack.h"
-#include "binaryTree.h"
-#include "thread.h"
-#include "character.h"
-#include "polymorphic.h"
-#import <string.h>
-#import "block.h"
-#import "GCD.h"
-#import "Algorithm.h"
+#import "RHCHeaders.h"
 
 int main(int argc, const char * argv[]) {
-    //Algorithm
+    // SqList
+    SqList *sqlist = (SqList *)malloc(sizeof(SqList));
+    for (int i = 0; i <3; i ++) {
+//        (*sqlist).data[i] = i;
+//        (*sqlist).length = i+1;
+        sqlist->data[i] = i;
+        sqlist->length = i+1;
+        
+        NSLog(@"%d",sqlist->data[i]);
+    }
+
+    ListInsert(sqlist, 2, 3);
+    ListDelete(sqlist, 1, 0);
+    
+    for (int i = 0; i <sqlist->length; i ++) {
+        NSLog(@"%d",sqlist->data[i]);
+    }
+    
+    // Algorithm
     execCmd();
 
-    //GCD
+    // GCD
     GCD *gcd = [GCD new];
     [gcd GCDTest];
     
-    //block
+    // block
     block *b = [block new];
     [b BlockTest1];
     [b BlockTest2];
     
-    //polymorephic
+    // polymorephic
     initPolymorephic();
     
     Employee *samuel = (Employee *)malloc(sizeof(Employee));
@@ -47,7 +54,7 @@ int main(int argc, const char * argv[]) {
     strcpy(susan->name, "susan");
     susan->age = 56;
     
-    //Binary tree
+    // Binary tree
     TreeNode *tree = NULL;
     insertNode(&tree, (COMPARE )compareEmployee, samuel);
     insertNode(&tree, (COMPARE )compareEmployee, sally);
@@ -57,7 +64,7 @@ int main(int argc, const char * argv[]) {
     inOrder(tree,(DISPLAY)displayEmployee);
     postOrder(tree,(DISPLAY)displayEmployee);
     
-    //Stack
+    // Stack
     Stack stack;
     initializeLinkList(&stack);
     push(&stack, samuel);
@@ -70,7 +77,7 @@ int main(int argc, const char * argv[]) {
         printf("popped %s\n",employee->name);
     }
     
-    //Queue
+    // Queue
     Queue queue;
     initializeLinkList(&queue);
     enqueue(&queue, samuel);
@@ -86,7 +93,7 @@ int main(int argc, const char * argv[]) {
     data = dequeue(&queue);
     printf("Dequeued %s\n",((Employee *)data)->name);
     
-    //LinkList
+    // LinkList
     LinkedList *list = getLinkedListInstance();
     Person *person = (Person *)malloc(sizeof(Person));
     initializePerson(person, "Peter", "Underwood", "Manager", 36);
@@ -113,7 +120,7 @@ int main(int argc, const char * argv[]) {
     displayLinkedList(&linkedList, (DISPLAY)displayEmployee);
     
     
-    //struct
+    // struct
     initializeList();
     Person *ptrPerson;
     ptrPerson = getPerson();
@@ -128,7 +135,7 @@ int main(int argc, const char * argv[]) {
     initializePerson(ptrPerson, "Talph", "hitsgerald",  "Mr", 55);
     returnPerson(ptrPerson);
     
-    //thread
+    // thread
     initThread();
     threadExample();
     

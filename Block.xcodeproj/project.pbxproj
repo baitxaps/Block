@@ -75,6 +75,7 @@
 		770B746E1D4881FF0069BC30 /* character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = character.c; sourceTree = "<group>"; };
 		770B747D1D4882510069BC30 /* block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = block.mm; sourceTree = "<group>"; };
 		770B747E1D4882510069BC30 /* block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
+		770B74811D488CB50069BC30 /* RHCHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHCHeaders.h; sourceTree = "<group>"; };
 		7732971E1C7C4870001F853F /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Block; path = "/Users/hairongchen/Documents/设计模式之禅/Block/build/Debug/Block"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -186,9 +187,18 @@
 			path = Block;
 			sourceTree = "<group>";
 		};
+		770B74801D488C9F0069BC30 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				770B74811D488CB50069BC30 /* RHCHeaders.h */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		773297151C7C4870001F853F = {
 			isa = PBXGroup;
 			children = (
+				770B74801D488C9F0069BC30 /* Others */,
 				770B74701D4882300069BC30 /* Block */,
 				770B742B1D487CDF0069BC30 /* RunLoop */,
 				770B742C1D487CDF0069BC30 /* Socket */,
