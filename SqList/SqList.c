@@ -7,12 +7,8 @@
 //
 
 #include "SqList.h"
-#define OK    1
-#define ERROR 0
-#define TRUE  1
-#define FALSE 0
 
-typedef int  Status;
+#if Swith
  
 // 顺序线性表Ｌ已经存在，1<= i <= ListLength(L)
 // 用e 返回Ｌ中第i个数据元素的值
@@ -68,3 +64,4 @@ Status ListDelete (SqList *L,int i ,ELemType *e ) {
     L->length --;
     return OK;
 }
+#endif

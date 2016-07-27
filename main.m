@@ -10,6 +10,7 @@
 
 int main(int argc, const char * argv[]) {
     // SqList
+#if Swith
     SqList *sqlist = (SqList *)malloc(sizeof(SqList));
     for (int i = 0; i <3; i ++) {
 //        (*sqlist).data[i] = i;
@@ -26,7 +27,7 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i <sqlist->length; i ++) {
         NSLog(@"%d",sqlist->data[i]);
     }
-    
+#endif
     // Algorithm
     execCmd();
 
@@ -139,7 +140,7 @@ int main(int argc, const char * argv[]) {
     initThread();
     threadExample();
     
-    //character
+    // character
     char *names[] = {"Bob","Ted","Carol","Alice"};
     sort(names, 4, compare);
     displayNames(names, 4);

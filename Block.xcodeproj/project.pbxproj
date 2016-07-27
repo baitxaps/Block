@@ -25,6 +25,7 @@
 		770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746B1D4881CD0069BC30 /* polymorphic.c */; };
 		770B746F1D4881FF0069BC30 /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746E1D4881FF0069BC30 /* character.c */; };
 		770B747F1D4882510069BC30 /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 770B747D1D4882510069BC30 /* block.mm */; };
+		770B74841D48A93D0069BC30 /* Node.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B74821D48A93D0069BC30 /* Node.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -76,6 +77,17 @@
 		770B747D1D4882510069BC30 /* block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = block.mm; sourceTree = "<group>"; };
 		770B747E1D4882510069BC30 /* block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
 		770B74811D488CB50069BC30 /* RHCHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHCHeaders.h; sourceTree = "<group>"; };
+		770B74821D48A93D0069BC30 /* Node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Node.c; sourceTree = "<group>"; };
+		770B74831D48A93D0069BC30 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		770B74851D48AA3E0069BC30 /* RHCMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHCMacros.h; sourceTree = "<group>"; };
+		770B748B1D48BD6F0069BC30 /* node_insert_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_insert_01.png; sourceTree = "<group>"; };
+		770B748C1D48BD6F0069BC30 /* node_insert_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_insert_00.png; sourceTree = "<group>"; };
+		770B748D1D48BD6F0069BC30 /* node_delete00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_delete00.png; sourceTree = "<group>"; };
+		770B748E1D48BD6F0069BC30 /* DS_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DS_01.png; sourceTree = "<group>"; };
+		770B748F1D48BD6F0069BC30 /* DS_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DS_00.png; sourceTree = "<group>"; };
+		770B74901D48BE460069BC30 /* node_create_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_00.png; sourceTree = "<group>"; };
+		770B74921D48C60D0069BC30 /* node_create_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_001.png; sourceTree = "<group>"; };
+		770B74931D48F4830069BC30 /* node_create_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_002.png; sourceTree = "<group>"; };
 		7732971E1C7C4870001F853F /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Block; path = "/Users/hairongchen/Documents/设计模式之禅/Block/build/Debug/Block"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -174,6 +186,8 @@
 			children = (
 				770B742E1D487CDF0069BC30 /* SqList.c */,
 				770B742F1D487CDF0069BC30 /* SqList.h */,
+				770B74821D48A93D0069BC30 /* Node.c */,
+				770B74831D48A93D0069BC30 /* Node.h */,
 			);
 			path = SqList;
 			sourceTree = "<group>";
@@ -190,7 +204,16 @@
 		770B74801D488C9F0069BC30 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				770B74901D48BE460069BC30 /* node_create_00.png */,
+				770B74921D48C60D0069BC30 /* node_create_001.png */,
+				770B74931D48F4830069BC30 /* node_create_002.png */,
+				770B748B1D48BD6F0069BC30 /* node_insert_01.png */,
+				770B748C1D48BD6F0069BC30 /* node_insert_00.png */,
+				770B748D1D48BD6F0069BC30 /* node_delete00.png */,
+				770B748E1D48BD6F0069BC30 /* DS_01.png */,
+				770B748F1D48BD6F0069BC30 /* DS_00.png */,
 				770B74811D488CB50069BC30 /* RHCHeaders.h */,
+				770B74851D48AA3E0069BC30 /* RHCMacros.h */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -272,6 +295,7 @@
 				770B74391D4880130069BC30 /* GCD.m in Sources */,
 				770B74621D4881210069BC30 /* link.c in Sources */,
 				770B743C1D4880240069BC30 /* CPlusplus.cpp in Sources */,
+				770B74841D48A93D0069BC30 /* Node.c in Sources */,
 				770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */,
 				770B746F1D4881FF0069BC30 /* character.c in Sources */,
 				770B74251D487C670069BC30 /* main.m in Sources */,
