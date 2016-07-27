@@ -146,7 +146,8 @@ char *InneerInfo()
     return info;
 }
 
-int main(int argc, const char * argv[])
+
+int main1(int argc, const char * argv[])
 {
     char *info = InneerInfo();
     printf("%ld\n",sizeof(info));
