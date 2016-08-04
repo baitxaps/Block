@@ -26,5 +26,5 @@ Status GetElem(LinkList L,int i,ELemType *e);
 Status ListInsert (LinkList *L,int i,ELemType e);
 Status ListDelete(LinkList *L,int i, ELemType *e);
 
-Status Clear(LinkList *L) ; 
+Status Clear(LinkList *L);
 #endif /* Node_h */

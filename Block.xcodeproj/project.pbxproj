@@ -26,6 +26,7 @@
 		770B746F1D4881FF0069BC30 /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746E1D4881FF0069BC30 /* character.c */; };
 		770B747F1D4882510069BC30 /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 770B747D1D4882510069BC30 /* block.mm */; };
 		770B74841D48A93D0069BC30 /* Node.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B74821D48A93D0069BC30 /* Node.c */; };
+		77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */ = {isa = PBXBuildFile; fileRef = 77852F4C1D4EF4B700BB967D /* DulNode.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,7 +89,12 @@
 		770B74901D48BE460069BC30 /* node_create_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_00.png; sourceTree = "<group>"; };
 		770B74921D48C60D0069BC30 /* node_create_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_001.png; sourceTree = "<group>"; };
 		770B74931D48F4830069BC30 /* node_create_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_002.png; sourceTree = "<group>"; };
-		7732971E1C7C4870001F853F /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Block; path = "/Users/hairongchen/Documents/设计模式之禅/Block/build/Debug/Block"; sourceTree = "<absolute>"; };
+		77852F481D4EF32000BB967D /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
+		77852F4C1D4EF4B700BB967D /* DulNode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DulNode.c; sourceTree = "<group>"; };
+		77852F4D1D4EF4B700BB967D /* DulNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DulNode.h; sourceTree = "<group>"; };
+		77852F4F1D4EF5A800BB967D /* DulNode001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode001.png; sourceTree = "<group>"; };
+		77852F511D4F009800BB967D /* DulNode002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode002.png; sourceTree = "<group>"; };
+		77852F521D4F0DB900BB967D /* DulNode003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode003.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,10 +190,15 @@
 		770B742D1D487CDF0069BC30 /* SqList */ = {
 			isa = PBXGroup;
 			children = (
+				77852F4F1D4EF5A800BB967D /* DulNode001.png */,
+				77852F511D4F009800BB967D /* DulNode002.png */,
+				77852F521D4F0DB900BB967D /* DulNode003.png */,
 				770B742E1D487CDF0069BC30 /* SqList.c */,
 				770B742F1D487CDF0069BC30 /* SqList.h */,
 				770B74821D48A93D0069BC30 /* Node.c */,
 				770B74831D48A93D0069BC30 /* Node.h */,
+				77852F4C1D4EF4B700BB967D /* DulNode.c */,
+				77852F4D1D4EF4B700BB967D /* DulNode.h */,
 			);
 			path = SqList;
 			sourceTree = "<group>";
@@ -232,6 +243,7 @@
 				770B742A1D487CC40069BC30 /* GCD */,
 				770B74261D487CAD0069BC30 /* Algorithm */,
 				770B74241D487C670069BC30 /* main.m */,
+				77852F481D4EF32000BB967D /* Block */,
 			);
 			sourceTree = "<group>";
 		};
@@ -252,7 +264,7 @@
 			);
 			name = Block;
 			productName = Block;
-			productReference = 7732971E1C7C4870001F853F /* Block */;
+			productReference = 77852F481D4EF32000BB967D /* Block */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -296,6 +308,7 @@
 				770B74621D4881210069BC30 /* link.c in Sources */,
 				770B743C1D4880240069BC30 /* CPlusplus.cpp in Sources */,
 				770B74841D48A93D0069BC30 /* Node.c in Sources */,
+				77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */,
 				770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */,
 				770B746F1D4881FF0069BC30 /* character.c in Sources */,
 				770B74251D487C670069BC30 /* main.m in Sources */,
@@ -399,6 +412,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD_NO_PIE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -407,6 +422,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD_NO_PIE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

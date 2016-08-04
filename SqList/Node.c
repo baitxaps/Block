@@ -122,7 +122,7 @@ Status ListDelete(LinkList *L,int i, ELemType *e) {
         ++j;
     }
     
-    if (!(p->next)|| j > i) {
+    if (!(p->next) || j > i) {
         return ERROR;
     }
     
