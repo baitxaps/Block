@@ -12,3 +12,5 @@
 #include <stdio.h>
 
 #endif /* CPlusplus_hpp */
+
+int test();
