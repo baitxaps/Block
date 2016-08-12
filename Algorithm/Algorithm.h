@@ -28,4 +28,14 @@ int  maxLength(int arr1[],int len1,int arr2[],int len2);
 
 void execCmd();
 
+
+struct Item {
+    int iValue;
+    struct Item *pNext;
+};
+typedef struct Item _Node;
+
+unsigned char symmetry(long n);
+_Node* setItem( _Node *pHead,int m) ;
+int search(int a[],int x,int low,int high);
 @end

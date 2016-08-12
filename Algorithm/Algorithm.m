@@ -7,7 +7,7 @@
 //
 
 #import "Algorithm.h"
-
+#define ERROR -1
 @implementation Algorithm
 
 char *getRandomString(int len)
@@ -249,13 +249,10 @@ typedef struct Node {
     struct Node *next;
 }ListNode;
 
-ListNode *create(void)
-{
+ListNode *create(void) {
     ListNode *head,*p = NULL,*q = NULL;
     head = NULL;
-    
     int i =0;
-    
     while (i <6) {
         p = (ListNode *)malloc(sizeof(ListNode));
         if (head ==NULL) {
@@ -271,8 +268,7 @@ ListNode *create(void)
     return head;
 }
 
-void showList(ListNode * head)
-{
+void showList(ListNode * head) {
     ListNode *p = head;
     while (p) {
         printf("%c\n",p->data);
@@ -280,8 +276,7 @@ void showList(ListNode * head)
     }
 }
 
-ListNode * reverseList( ListNode *node)
-{
+ListNode * reverseList( ListNode *node) {
     ListNode *p,*q =NULL,*r =NULL;
     p =node;
     while (p) {
@@ -290,15 +285,85 @@ ListNode * reverseList( ListNode *node)
         r= p;
         p =q;
     }
-    
     return r;
 }
 
-char *InneerInfo()
-{
+char *InneerInfo() {
     char *info = (char *)malloc(sizeof(10));
     
     return info;
+}
+
+_Node* setItem( _Node *pHead,int m) {
+    _Node *pCurrent  ,*pFind;
+    pCurrent= pFind = pHead;
+    
+    for(int i = 0;i< m; i++){
+        if(pCurrent){
+            pCurrent = pCurrent->pNext;
+        }else {
+            return NULL;
+        }
+    }
+    while (pCurrent) {
+        pFind = pFind->pNext;
+        pCurrent = pCurrent->pNext;
+    }
+    return pFind;
+}
+
+int search(int a[],int x,int low,int high){
+    int mid;
+    if (low>high) return ERROR;
+    
+    while (low <= high) {
+        mid = (low +high)/2;
+        if (x == a[mid])    return mid;
+        else if (x >a[mid]) low = mid +1;
+        else if (x<a[mid])  high = mid -1;
+    }
+    return ERROR;
+}
+
+
+struct Item * setItem1(struct Item *pHead,int m) {
+    struct Item *pCurrent= pHead ,*pFind= pHead;
+    for(int i = 0;i< m; i++){
+        if(pCurrent){
+            pCurrent =  pCurrent->pNext;
+        }else {
+            return NULL;
+        }
+    }
+    while (pCurrent) {
+        pCurrent =   pCurrent->pNext;
+        pCurrent =  pCurrent->pNext;
+    }
+    return pFind;
+}
+
+void test() {
+    int **pp,*p,a=10,b= 20;
+    pp = &p;
+    p= &a;
+    p= &b;
+    NSLog(@"%d,%d",*p,**pp);
+    
+    int s[5]= {2,5,7,8,10};
+    int *ptr = (int *)(&s +1);
+    NSLog(@"%d,%d",*(s+1),*(ptr-1));
+}
+
+unsigned char symmetry(long n){
+    long tmp = n,sum =0;
+    
+    while (tmp) {
+        sum = sum *10 +tmp%10;
+        tmp/=10;
+    }
+    char type = (sum == n)?'1':'0';
+    
+    return type;
 }
 
 void execCmd(){

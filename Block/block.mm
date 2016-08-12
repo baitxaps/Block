@@ -248,32 +248,32 @@ blk_t stackblk(int rate){
     mblk([NSObject new]);
     
     //6.
-    mblk_t wblk;
-    {
-        id array = [NSMutableArray new];
-        id __weak array1 = array;
-        wblk = [^(id obj){
-            [array1 addObject:obj];
-            NSLog(@"array1.count = %ld",((NSMutableArray*)array1).count);
-        }copy];
-    }
-    wblk([NSObject new]);
-    wblk([NSObject new]);
-    wblk([NSObject new]);
+//    mblk_t wblk;
+//    {
+//        id array = [NSMutableArray new];
+//        id __weak array1 = array;
+//        wblk = [^(id obj){
+//            [array1 addObject:obj];
+//            NSLog(@"array1.count = %ld",((NSMutableArray*)array1).count);
+//        }copy];
+//    }
+//    wblk([NSObject new]);
+//    wblk([NSObject new]);
+//    wblk([NSObject new]);
     
     //7.
-    mblk_t bblk;
-    {
-        id array = [NSMutableArray new];
-        __block id __weak array2 = array;
-        bblk = [^(id obj){
-            [array2 addObject:obj];
-            NSLog(@"array2.count = %ld",((NSMutableArray*)array2).count);
-        }copy];
-    }
-    bblk([NSObject new]);
-    bblk([NSObject new]);
-    bblk([NSObject new]);
+//    mblk_t bblk;
+//    {
+//        id array = [NSMutableArray new];
+//        __block id __weak array2 = array;
+//        bblk = [^(id obj){
+//            [array2 addObject:obj];
+//            NSLog(@"array2.count = %ld",((NSMutableArray*)array2).count);
+//        }copy];
+//    }
+//    bblk([NSObject new]);
+//    bblk([NSObject new]);
+//    bblk([NSObject new]);
     
     //8.
     mblk_t unsaveBlk;
@@ -1029,31 +1029,31 @@ struct __Block_byref_obj_0 {
  */
 @implementation TObj
 
--(instancetype)init{
-    self = [super init];
-    //1.
-    id __weak tmp = self;
-    tblk_ = ^{NSLog(@"self = %@",tmp);};
-    //tblk_ = ^{NSLog(@"self = %@",self);};
-    
-    //1.1.
-    id __unsafe_unretained utmp = self;
-    tblk_ = ^{NSLog(@"self = %@",utmp);};
-    
-    //2.
-    id __weak obj = obj_;
-    oblk_ = ^{NSLog(@"self = %@",obj);};
-    //oblk_ = ^{NSLog(@"self = %@",obj_);};
-    
-    //3.
-    __block id btmp = self;
-    bblk_ = ^{
-        NSLog(@"self = %@",btmp);
-        btmp = nil;
-    };
-    
-    return self;
-}
+//-(instancetype)init{
+//    self = [super init];
+//    //1.
+//    id __weak tmp = self;
+//    tblk_ = ^{NSLog(@"self = %@",tmp);};
+//    //tblk_ = ^{NSLog(@"self = %@",self);};
+//    
+//    //1.1.
+//    id __unsafe_unretained utmp = self;
+//    tblk_ = ^{NSLog(@"self = %@",utmp);};
+//    
+//    //2.
+//    id __weak obj = obj_;
+//    oblk_ = ^{NSLog(@"self = %@",obj);};
+//    //oblk_ = ^{NSLog(@"self = %@",obj_);};
+//    
+//    //3.
+//    __block id btmp = self;
+//    bblk_ = ^{
+//        NSLog(@"self = %@",btmp);
+//        btmp = nil;
+//    };
+//    
+//    return self;
+//}
 
 - (void)execBlock{
     bblk_();

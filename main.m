@@ -9,14 +9,48 @@
 #import "RHCHeaders.h"
 #include "CPlusplus.hpp"
 
+void GetMemory(char *p) {
+    p = (char *)malloc(100);
+}
+
+void GetMemory1(char **p,int num) {
+    *p = (char *)malloc(num);
+}
+
+
+void Test(void) {
+    char *str = NULL;
+    GetMemory(str);
+    
+   // strcpy(str, "hello world");
+    NSLog(@"%s",str);
+    
+    
+    str = NULL;
+    GetMemory1(&str,100);
+    strcpy(str, "hello world");
+    NSLog(@"%s",str);
+}
+
+
+typedef int  (^MyBlock)(int);
+MyBlock genBlock(){
+    int a  = 2;
+    MyBlock inBlock = ^(int n){
+        return n*a;
+    };
+    return [inBlock copy];
+}
+
 
 int main(int argc, const char * argv[]) {
 
+    MyBlock outBlock = genBlock();
+    long result = outBlock(1);
+    NSLog(@"%ld",result);
+    
     // Node
-  
-    
-    
-    
+
     // SqList
 #if Swith
     SqList *sqlist = (SqList *)malloc(sizeof(SqList));
