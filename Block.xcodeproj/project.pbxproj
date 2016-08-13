@@ -26,6 +26,9 @@
 		770B746F1D4881FF0069BC30 /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746E1D4881FF0069BC30 /* character.c */; };
 		770B747F1D4882510069BC30 /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 770B747D1D4882510069BC30 /* block.mm */; };
 		770B74841D48A93D0069BC30 /* Node.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B74821D48A93D0069BC30 /* Node.c */; };
+		772654F01D5F33F00082E13D /* StatusEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654EF1D5F33F00082E13D /* StatusEntity.m */; };
+		772654F71D5F45D90082E13D /* NSObject+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654F61D5F45D90082E13D /* NSObject+Model.m */; };
+		772654FA1D5F483E0082E13D /* NSObject+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654F91D5F483E0082E13D /* NSObject+Log.m */; };
 		77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */ = {isa = PBXBuildFile; fileRef = 77852F4C1D4EF4B700BB967D /* DulNode.c */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +92,13 @@
 		770B74901D48BE460069BC30 /* node_create_00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_00.png; sourceTree = "<group>"; };
 		770B74921D48C60D0069BC30 /* node_create_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_001.png; sourceTree = "<group>"; };
 		770B74931D48F4830069BC30 /* node_create_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = node_create_002.png; sourceTree = "<group>"; };
+		772654EE1D5F33F00082E13D /* StatusEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusEntity.h; sourceTree = "<group>"; };
+		772654EF1D5F33F00082E13D /* StatusEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusEntity.m; sourceTree = "<group>"; };
+		772654F41D5F35900082E13D /* Entity.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entity.plist; sourceTree = "<group>"; };
+		772654F51D5F45D90082E13D /* NSObject+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Model.h"; sourceTree = "<group>"; };
+		772654F61D5F45D90082E13D /* NSObject+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Model.m"; sourceTree = "<group>"; };
+		772654F81D5F483E0082E13D /* NSObject+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Log.h"; sourceTree = "<group>"; };
+		772654F91D5F483E0082E13D /* NSObject+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Log.m"; sourceTree = "<group>"; };
 		77852F481D4EF32000BB967D /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
 		77852F4C1D4EF4B700BB967D /* DulNode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DulNode.c; sourceTree = "<group>"; };
 		77852F4D1D4EF4B700BB967D /* DulNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DulNode.h; sourceTree = "<group>"; };
@@ -229,9 +239,24 @@
 			path = Others;
 			sourceTree = "<group>";
 		};
+		772654ED1D5F33AB0082E13D /* KVC */ = {
+			isa = PBXGroup;
+			children = (
+				772654F41D5F35900082E13D /* Entity.plist */,
+				772654EE1D5F33F00082E13D /* StatusEntity.h */,
+				772654EF1D5F33F00082E13D /* StatusEntity.m */,
+				772654F51D5F45D90082E13D /* NSObject+Model.h */,
+				772654F61D5F45D90082E13D /* NSObject+Model.m */,
+				772654F81D5F483E0082E13D /* NSObject+Log.h */,
+				772654F91D5F483E0082E13D /* NSObject+Log.m */,
+			);
+			path = KVC;
+			sourceTree = "<group>";
+		};
 		773297151C7C4870001F853F = {
 			isa = PBXGroup;
 			children = (
+				772654ED1D5F33AB0082E13D /* KVC */,
 				770B74801D488C9F0069BC30 /* Others */,
 				770B74701D4882300069BC30 /* Block */,
 				770B742B1D487CDF0069BC30 /* RunLoop */,
@@ -317,10 +342,13 @@
 				770B74691D48818A0069BC30 /* stack.c in Sources */,
 				770B743F1D48802F0069BC30 /* client_socket.m in Sources */,
 				770B747F1D4882510069BC30 /* block.mm in Sources */,
+				772654FA1D5F483E0082E13D /* NSObject+Log.m in Sources */,
 				770B74351D487FEE0069BC30 /* thread.c in Sources */,
 				770B74451D48803C0069BC30 /* server_socket.m in Sources */,
 				770B74441D48803C0069BC30 /* socket_manager.m in Sources */,
 				770B745A1D48809E0069BC30 /* Algorithm.m in Sources */,
+				772654F01D5F33F00082E13D /* StatusEntity.m in Sources */,
+				772654F71D5F45D90082E13D /* NSObject+Model.m in Sources */,
 				770B74631D4881210069BC30 /* binaryTree.c in Sources */,
 				770B74361D487FEE0069BC30 /* runloop.m in Sources */,
 			);
