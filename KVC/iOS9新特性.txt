@@ -1,0 +1,179 @@
+一、关键字
+迎合swift,提高开发规范，减少程序员之间的交流
+1.
+@property(nonatomic,strong,nullable)NSString *name;
+@property(nonatomic,strong)NSString * _Nullable name;
+@property(nonatomic,strong)NSString * __nullable name;
+
+@property(nonatomic,nonnull,strong)NSString * name;
+@property(nonatomic,strong)NSString * _Nonnull name;
+@property(nonatomic,strong)NSString *__nonnull name;
+
+- (nonnull NSString *)test:(nonnull NSString*)str;
+- (NSString *_Nonnull)test1:(NSString *_Nullnull)str;
+2.
+NS_ASSUME_NONNULL_BEGIN 和NS_ASSUME_NUNNULL_END
+之间定义的所有属性默认都包含nonnull功能
+
+3.null_resettable
+@property(nonatomic,strong,null_resettable)NSString *name
+set方法可为空，get方法不能为空, 注意如果使用null_resettable，必须重写get 或set方法，处理传递的值为空的情况
+
+4._Null_unsepcified ：不确定是否为空
+ 因为3中,不确定是调用get 或set 方法，书写方式只有下面这两种：
+@property(nonatomic,strong)NSString *_Null_unsepcified name;这样写没有什么意义
+@property(nonatomic,strong)NSString *__null_unsepcified name
+
+二、泛型
+使用场景：集合是使用比较常见，只能修饰方法的调用
+好处：
+提高开发规范，减少程序员之间交流
+通过集合取出来对象，直接当做泛型对象使用，可以直接使用点语法
+
+书定规范:NSMutableArray<NSString*>*datas;
+@prooert(nonatomic,strong)NSMutableArray<NSString*>*datas;
+// self.datas[1].length
+
+// 声明
+@interface Person<ObjectType>:NSObject @end
+@property(nonatomic,strong)ObjectType tree;
+@implement Person @end
+
+@interface Job:NSObject @end
+@implement Person @end
+
+// 定义
+{
+Person<Job *>tmp = [Job new];
+Person<NSString *>sting = @"string;
+}
+
+三、协变、逆变
+1.__covariant:用于泛型数据强转，可以向上强转，子类可以转成父类
+@interface Person<__covariant ObjectType>:NSObject @end
+@property(nonatomic,strong)ObjectType tree;
+@implement Person @end
+
+@interface Info :Person @end
+@implement Person @end
+
+{
+ Person <Job*>*p = [Person new];
+ Info <Sex*>*I = [Inof new];
+  p = i;
+}
+
+2.逆变 __contravariant 用于泛型数据强转，可以向下强转，父类可以转成子类
+@interface Person<__contravariant ObjectType>:NSObject @end
+@property(nonatomic,strong)ObjectType tree;
+@implement Person @end
+
+四、__kindof
+当前类或它的子类, 在调用的时候，很清楚的知道返回类型
+书写格式：放在类型前面
++ (__kindof instancetype)Person;
+
+五、id与instancetype
+id 坏处：
+1>不能在编译的时候检查真实类型 
+2>  返回值，没有提示
+instancetype:
+会自动识别当前的对象类
+
+
+六、runtime
+1.消息发送
+build ->msg ->NO
+实例方法
+- (void)run:(int)a;
+objc_msgSend(p,@selector(run:),10);
+
+类方法：本质类名转换成类对象
+Class person = [Person class];
+person performSelector:@selector:(done)];
+
+[objc_msgSend(person,@selector(done)];
+
+2.方法交换
+class_getMethodImplementation:获取方法实现
+class_getInstanceMethod:获取对象
+class_getClassMehtod:获取类方法
+
++(void)load {
+	method imageNameMethod = class_getClassMehtod([UIImage class],@selector(imagedNamed:));
+	method rhc_imageNameMethod =  class_getClassMehtod([UIImage class],@selector(rhc_imagedNamed:));
+	method_exchangeImplementations(imageNameMethod,rhc_imageNameMethod);
+}
+
++ (UIImage*)rhc_imagedNamed:(NSString*)imaged {
+	UIImage *tmp = [UIImage rhc_imagedName:imaged];
+	if(!tmp){
+	 
+	}
+	return tmp;
+  }
+}
+
+{
+ UIImage = [UIImage imaged:@"rhc"];
+}
+
+3.动态的添加方法
+没有参数
+[obj performSelector:@selector(done)];动态添加方法
+首先实现resolveInstanceMethod
++(BOOL)resolveInstanceMethod:(SEL)sel {
+	if([sel==@selector(done)]){
+		class_addMethod(self,sel,(IMP)rhc,"v@:");
+		return YES;
+	}
+	
+	return [super resolveInstanceMethod:sel];
+}
+class_addMethod：
+cls :给哪个类型添加方法
+SEL:添加方法的方法编号是什么
+IMP:方法实现，函数入口，函数名
+types:方法类型
+
+v@:返回值v->void,@->id（id 对象）,:->sel（方法纺号）
+
+// 默认一个方法都有两个参数：self,_cmd,隐式参数,不用传
+self 方法调用者
+_cmd:调用方法的编号
+void rhc(id self,SEL _cmd){}
+
+一个参数
+[obj performSelector:@selector(run:) withObject:@"rhc"];动态添加方法
+
+class_addMethod(self,sel,(IMP)test,"v@:@");
+
+void test(id self,SEL _cmd,id param1){}
+
+4.给分类添加属性
+
+@interface NSObject(Objc）
+@property(nonatomic,strong)NSString *name;
+@end
+
+@implement NSObject(Objc)
+
+- (void)setName:(NSString*)name {
+  //objc_setAssociatedObject(self,const id key,id valeu,objc_AssociationPolicy pllicy)
+  objc_setAssociatedObject(self,@"name",name,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)name {
+	return objc_getAssociatedObject(self,@"name");
+}
+@end
+
+5.字典转模型KVC：遍历字典中所有key,去模型中查找有没有对应的属性名
+
+字典转模型runtime:遍历模型中所有属性，去字典中查找
+class_copyIvarList:把成员属性列表复制一份给你
+Ivar *:指向一个成员变量数组
+Ivar *ivarList = class_copyIvarList(self, &count);
+
+
+
