@@ -100,6 +100,7 @@
 		772654F81D5F483E0082E13D /* NSObject+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Log.h"; sourceTree = "<group>"; };
 		772654F91D5F483E0082E13D /* NSObject+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Log.m"; sourceTree = "<group>"; };
 		772654FB1D5F50BA0082E13D /* iOS9新特性.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "iOS9新特性.txt"; sourceTree = "<group>"; };
+		7784A74F1D60BAD600084BBA /* RunLoop */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RunLoop; sourceTree = "<group>"; };
 		77852F481D4EF32000BB967D /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
 		77852F4C1D4EF4B700BB967D /* DulNode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DulNode.c; sourceTree = "<group>"; };
 		77852F4D1D4EF4B700BB967D /* DulNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DulNode.h; sourceTree = "<group>"; };
@@ -181,6 +182,7 @@
 				770B74321D487FED0069BC30 /* thread.c */,
 				770B74331D487FED0069BC30 /* runloop.m */,
 				770B74341D487FED0069BC30 /* runloop.h */,
+				7784A74F1D60BAD600084BBA /* RunLoop */,
 			);
 			path = RunLoop;
 			sourceTree = "<group>";

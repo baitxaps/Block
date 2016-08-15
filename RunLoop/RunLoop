@@ -1,0 +1,110 @@
+RunLoop :运行循环，兜圈圈
+1.基本作用：
+保存程序的持续运行
+处理App中的各种事件(触摸事件、定时器事件，Selector事件)
+节省CPU资源，提高程序性能：该做事时做事，该休息时休息
+
+2.
+int main(int argc, const char * argv[]) {
+
+   BOOL running = YES;
+    do {
+       //执行各种操作
+      }while(running);
+
+｝
+有RunLoop的情况下
+由于main函数里启动了个RunLoop，所以程序不会马上退出，保持程序运行状态
+
+int main(int argc, char *argv[])
+{
+  @autoreleasepool {
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([H264AppDelegate class]));
+   }
+}
+UIApplicationMain 函数内部就启动了一个RunLoop,所以UIApplicationMain
+函数一直没有返回，保持了程序的持续运行
+这个默认启动的RunLoop是跟主线程相关联的
+
+RunLoop
+iOS 有2套API来访问和使用RunLoop
+Foundation:NSRunLoop
+CoreFoundation:CFRunLoopRef
+NSRunLoop 和CFRunLoopRef都代表着RunLoop对象
+
+3.NSRunLoop是基于CFRunLoopRef的一层包装，所以要了解RunLoop内部结构，需要研究CFRunLoopRef层面API(CoreFoundation层面）
+
+4.RunLoop与线程
+每条线程都有唯一的一个与之对应的RunLoop对象
+主线程的RunLoop已经自动创建好了，子线程的RunLoop需要主动创建。RunLoop在第一次获取时创建，在线程结束时销毁
+
+5.获取RunLoop对象
+Foundation:[NSRunLoop currentRunLoop] 获取当前线程
+[NSRunLoop MainRunLoop];
+CoreFoundation: CFRunLoopGetCurrent(),获取当前线程的RunLoop对象
+CFRunLoopGegMain()
+
+6.RunLoop相关类
+CoreFoundation中相关RunLoop的5个类
+CFRunLoopRef
+CFRunLoopModeRef
+CFRunLoopSourceRef
+CFRunLoopTimeRef
+CFRunLoopObserverRef
+
+RunLoop要有意义，必须依赖于Mode.Mode是活的，那么RunLoop就会跑起来
+
+Mode
+<Set>Source
+<Array>observer
+<Array>Timer
+（Mode中，不一定要这三个都同时有值，只要一个有值，Mode就是活的，只要Mode是活的，那么RunLoop就会跑起来）
+
+7.CFRunLoopModeRef
+CFRunLoopModeRef 代表RunLoop的运行模式
+一个RunLoop包含若干个Mode，每个Mode又包含若干个Sorece/Time/Observer
+每次RunLoop启动时，只能指定其中一个Mode，这个Mode被称作CurrentMode
+如果要切换Mode，只能退出Loop,再重新指定一个Mode进入，这样做主要是为了分隔开不同值的Sorece/Time/Observer,让其互不影响
+
+8.CFRunLoopModeRef
+系统默认注册了5个Mode
+kCFRunLoopDefaultMode:App默认Mode，通常主线程是在这个Mode下运行
+UITrackingRunLoopMode:界面跟踪Mode,用于ScrollView追踪触摸，滑动，保证界面滑动时不受其他Mode影响
+GSEventReciveRunLoopMode:接受系统时间内部Mode，通常用不到
+kCFRunLoopCommonModes:这是一个占位用的Mode，不是一种真下的Mode
+
+9.CFRunLoopSourceRef：是事件源（输入源)
+source0:非基于Port的custome input sources,cocoa perform,selector sources
+也就是自己写的函数，不是系统提供的API
+source1:基于Port的，（Port_base sources)。通俗点说就是基于系统的API
+
+10.CFRunLoopTimerRef
+基于时间的触发器，基本上就是说NSTimer
+
+11.CFRunLoopObserverRef
+是观察者，能够监呼RunLoop的状态改变（睡眠，唤醒）可以监听的时间点有以下几个:
+typedef CF_OPTIONS(CFOptionFlags,CFRunLoopActivity){
+kCFRunLoopEntity = (1UL<<0) //即将进入runloop
+kCFRunLoopBeforeTimers=(1UL<<1)//即将处理timer
+kCFRunLoopBeforeSources= (1UL<<2)//即将处理source
+kCFRunLoopBeforeWaiting =(1UL <<5)//即将进入休眠
+kCFRunLoopAfterWaiting=(1UL<<6)// 刚从休眠中唤醒
+kCFRunLoopExit = (1UL<<7)// 即将退出RunLoop
+kCFRunLoopAllActivities = 0x0FFFFFFFU // 监听runloop所有的情况
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

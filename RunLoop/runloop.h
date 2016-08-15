@@ -23,4 +23,8 @@
 #if TARGET_OS_IPHONE
 - (void)delayLoadingImage;
 #endif
+
+- (void)createThread;
+- (void)threadAgain;
+- (void)createTimer;
 @end

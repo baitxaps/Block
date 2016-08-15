@@ -44,11 +44,20 @@ MyBlock genBlock(){
 
 
 int main(int argc, const char * argv[]) {
-
+    
+    runloop *loop = [runloop new];
+    [loop createThread];
+    
+    do {
+        [[NSRunLoop currentRunLoop]run];
+    }while (1) ;
+    
     MyBlock outBlock = genBlock();
     long result = outBlock(1);
     NSLog(@"%ld",result);
     
+    
+  //  [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector() userInfo:nil repeats:YES];
     // Node
 
     // SqList
