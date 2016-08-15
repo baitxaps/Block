@@ -112,6 +112,7 @@ UIImageView *imageView;
                             );
     
      CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopDefaultMode);
+     CFRelease(observer);
 }
 
  /**
