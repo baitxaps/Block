@@ -66,6 +66,16 @@
     return objc;
 }
 
+/*
+ OC:
+Model *obj = [Model alloc]init]
+obj.name = @"rhc";
+
+ C:
+id obj = objc_msgSend(objc_getClass("Model"),@selector(alloc),@selector(init));
+objc_msgSend(obj,@selector@(setName:),@"rhc");
+NSLog(@"%@",obj.name);
+*/
 @end
 
 

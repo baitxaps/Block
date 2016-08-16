@@ -70,6 +70,7 @@ CFRunLoopModeRef 代表RunLoop的运行模式
 系统默认注册了5个Mode
 kCFRunLoopDefaultMode:App默认Mode，通常主线程是在这个Mode下运行
 UITrackingRunLoopMode:界面跟踪Mode,用于ScrollView追踪触摸，滑动，保证界面滑动时不受其他Mode影响
+UIInitializationRunLoopMode :刚启动App时进入的第一个Mode，启动完成后不再使用
 GSEventReciveRunLoopMode:接受系统时间内部Mode，通常用不到
 kCFRunLoopCommonModes:这是一个占位用的Mode，不是一种真下的Mode
 
