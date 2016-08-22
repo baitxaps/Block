@@ -43,8 +43,26 @@ MyBlock genBlock(){
 }
 
 
+
 int main(int argc, const char * argv[]) {
+    dispatch_queue_t currnet = dispatch_queue_create("baitxps/csdn.net", DISPATCH_QUEUE_CONCURRENT);
     
+    dispatch_async(currnet, ^{
+        NSLog(@"1");
+    });
+    dispatch_async(currnet, ^{
+        NSLog(@"2");
+    });
+    dispatch_async(currnet, ^{
+        NSLog(@"3");
+    });
+    dispatch_async(currnet, ^{
+        NSLog(@"4");
+    });
+    dispatch_async(currnet, ^{
+        NSLog(@"5");
+    });
+ 
     runloop *loop = [runloop new];
     [loop createThread];
     
@@ -52,10 +70,14 @@ int main(int argc, const char * argv[]) {
         [[NSRunLoop currentRunLoop]run];
     }while (1) ;
     
-    MyBlock outBlock = genBlock();
-    long result = outBlock(1);
-    NSLog(@"%ld",result);
+//    MyBlock outBlock = genBlock();
+//    long result = outBlock(1);
+//    NSLog(@"%ld",result);
     
+    Algorithm *rithm =  [Algorithm new];
+    
+    NSString *binary =  [rithm  decailToBinayr:255];
+    NSLog(@"%@",binary);
     
   //  [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector() userInfo:nil repeats:YES];
     // Node

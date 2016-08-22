@@ -575,7 +575,18 @@ void dataSort(){
     return intance;
 }
 
-
+-(NSString *)decailToBinayr:(NSInteger)num {
+    NSString *str = @"";NSInteger currentNum;
+    
+    while (num) {
+        currentNum = num %2;
+        
+        str = [NSString stringWithFormat:@"%ld%@",currentNum,str];
+        
+        num /=2;
+    }
+    return str;
+}
 
 
 

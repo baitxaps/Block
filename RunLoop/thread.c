@@ -177,3 +177,4 @@ void initThread(){
     
     sleep(2);//为所有线程正常结束提供足够的时间
 }
+

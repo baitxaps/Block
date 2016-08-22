@@ -38,4 +38,5 @@ typedef struct Item _Node;
 unsigned char symmetry(long n);
 _Node* setItem( _Node *pHead,int m) ;
 int search(int a[],int x,int low,int high);
+-(NSString *)decailToBinayr:(NSInteger)num;
 @end
