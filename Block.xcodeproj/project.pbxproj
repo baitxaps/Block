@@ -180,8 +180,8 @@
 			children = (
 				770B74311D487FED0069BC30 /* thread.h */,
 				770B74321D487FED0069BC30 /* thread.c */,
-				770B74331D487FED0069BC30 /* runloop.m */,
 				770B74341D487FED0069BC30 /* runloop.h */,
+				770B74331D487FED0069BC30 /* runloop.m */,
 				7784A74F1D60BAD600084BBA /* RunLoop */,
 			);
 			path = RunLoop;
@@ -443,7 +443,7 @@
 		773297261C7C4870001F853F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				LD_NO_PIE = NO;
 				OTHER_CFLAGS = "";
@@ -455,7 +455,7 @@
 		773297271C7C4870001F853F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				LD_NO_PIE = NO;
 				OTHER_CFLAGS = "";

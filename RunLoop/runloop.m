@@ -177,7 +177,7 @@ UIImageView *imageView;
  但作为一种预防措施，@synchronized块会隐式的添加一个异常处理例程来保护代码，
  该处理例程会在异常抛出的时候自动的释放互斥锁。所以如果不想让隐式的异常处理例程带来额外的开销，你可以考虑使用锁对象
  */
-- (void)chonized {
+- (void)synchronized {
     NSObject *obj = [[NSObject alloc] init];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @synchronized(obj) {
@@ -241,7 +241,8 @@ UIImageView *imageView;
 }
 
 /**
- *  NSLock是Cocoa提供给我们最基本的锁对象，这也是我们经常所使用的，除lock和unlock方法外，NSLock还提供了tryLock和lockBeforeDate:两个方法，前一个方法会尝试加锁，如果锁不可用(已经被锁住)，刚并不会阻塞线程，并返回NO。lockBeforeDate:方法会在所指定Date之前尝试加锁，如果在指定时间之前都不能加锁，则返回NO。
+ *  NSLock是Cocoa提供给我们最基本的锁对象，这也是我们经常所使用的，除lock和unlock方法外，NSLock还提供了tryLock和lockBeforeDate:两个方法，前一个方法会尝试加锁，如果锁不可用(已经被锁住)，刚并不会阻塞线程，并返回NO。
+ lockBeforeDate:方法会在所指定Date之前尝试加锁，如果在指定时间之前都不能加锁，则返回NO。
  */
 - (void)nslock {
     NSLock *lock = [[NSLock alloc] init];
@@ -346,7 +347,6 @@ value = 5
 
 /**
  *  一种最基本的条件锁。手动控制线程wait和signal。
- 
  [condition lock];一般用于多线程同时访问、修改同一个数据源，保证在同一时间内数据源只被访问、修改一次，
  其他线程的命令需要在lock 外等待，只到unlock ，才可访问
  [condition unlock];与lock 同时使用
@@ -492,9 +492,7 @@ value = 5
  @synchronized: 371.17 ms
  
  总的来说：
- 
  OSSpinLock和dispatch_semaphore的效率远远高于其他。
- 
  @synchronized和NSConditionLock效率较差。
  
  鉴于OSSpinLock的不安全，所以我们在开发中如果考虑性能的话，建议使用dispatch_semaphore。

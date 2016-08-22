@@ -248,32 +248,32 @@ blk_t stackblk(int rate){
     mblk([NSObject new]);
     
     //6.
-//    mblk_t wblk;
-//    {
-//        id array = [NSMutableArray new];
-//        id __weak array1 = array;
-//        wblk = [^(id obj){
-//            [array1 addObject:obj];
-//            NSLog(@"array1.count = %ld",((NSMutableArray*)array1).count);
-//        }copy];
-//    }
-//    wblk([NSObject new]);
-//    wblk([NSObject new]);
-//    wblk([NSObject new]);
+    mblk_t wblk;
+    {
+        id array = [NSMutableArray new];
+        id __weak array1 = array;
+        wblk = [^(id obj){
+            [array1 addObject:obj];
+            NSLog(@"array1.count = %ld",((NSMutableArray*)array1).count);
+        }copy];
+    }
+    wblk([NSObject new]);
+    wblk([NSObject new]);
+    wblk([NSObject new]);
     
-    //7.
-//    mblk_t bblk;
-//    {
-//        id array = [NSMutableArray new];
-//        __block id __weak array2 = array;
-//        bblk = [^(id obj){
-//            [array2 addObject:obj];
-//            NSLog(@"array2.count = %ld",((NSMutableArray*)array2).count);
-//        }copy];
-//    }
-//    bblk([NSObject new]);
-//    bblk([NSObject new]);
-//    bblk([NSObject new]);
+    // 7.
+    mblk_t bblk;
+    {
+        id array = [NSMutableArray new];
+        __block id __weak array2 = array;
+        bblk = [^(id obj){
+            [array2 addObject:obj];
+            NSLog(@"array2.count = %ld",((NSMutableArray*)array2).count);
+        }copy];
+    }
+    bblk([NSObject new]);
+    bblk([NSObject new]);
+    bblk([NSObject new]);
     
     //8.
     mblk_t unsaveBlk;
@@ -286,9 +286,9 @@ blk_t stackblk(int rate){
             NSLog(@"array3.count = %ld",((NSMutableArray*)array3).count);
         }copy];
     }
-    //    unsaveBlk([NSObject new]);
-    //    unsaveBlk([NSObject new]);
-    //    unsaveBlk([NSObject new]);
+     unsaveBlk([NSObject new]);
+     unsaveBlk([NSObject new]);
+     unsaveBlk([NSObject new]);
     
 }
 
