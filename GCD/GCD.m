@@ -838,6 +838,11 @@ dispatch_release(semaphore);
 #endif
         }
     });
+    
+    
+//    id obj = NSObject.new;
+//    void *p = (__bridge void*)obj;
+//    id o  =(__bridge id)p;
 }
 
 #pragma mark -Dispatch Source

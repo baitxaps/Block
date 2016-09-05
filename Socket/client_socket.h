@@ -10,4 +10,8 @@
 
 @interface client_socket : NSObject
 
+int main_client_socket(int argc,char *argv[]);
+
+int fileMain(void) ;
+
 @end

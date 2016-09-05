@@ -219,6 +219,15 @@ UIImageView *imageView;
  dispatch_semaphore 是信号量，但当信号总量设为 1 时也可以当作锁来。在没有等待情况出现时，它的性能比 pthread_mutex 还要高，但一旦有等待情况出现时，性能就会下降许多。相对于 OSSpinLock 来说，它的优势在于等待时不会消耗 CPU 资源。
  
  如上的代码，如果超时时间overTime设置成>2，可完成同步操作。如果overTime<2的话，在线程1还没有执行完成的情况下，此时超时了，将自动执行下面的代码。
+ 上面代码的执行结果为：
+ 2016-06-29 20:47:52.324 SafeMultiThread[35945:579032] 需要线程同步的操作1 开始
+ 2016-06-29 20:47:55.325 SafeMultiThread[35945:579032] 需要线程同步的操作1 结束
+ 2016-06-29 20:47:55.326 SafeMultiThread[35945:579033] 需要线程同步的操作2
+ 
+ 如果把超时时间设置为<2s的时候，执行的结果就是：
+ 2016-06-30 18:53:24.049 SafeMultiThread[30834:434334] 需要线程同步的操作1 开始
+ 2016-06-30 18:53:25.554 SafeMultiThread[30834:434332] 需要线程同步的操作2
+ 2016-06-30 18:53:26.054 SafeMultiThread[30834:434334] 需要线程同步的操作1 结束
  */
 - (void)semaphore {
     dispatch_semaphore_t signal = dispatch_semaphore_create(1);

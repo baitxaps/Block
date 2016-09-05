@@ -16,8 +16,8 @@
 #import "socket_manager.h"
 
 @implementation client_socket
-/*
-int main(int argc,char *argv[])
+
+int main_client_socket(int argc,char *argv[])
 {
     int sock;
     struct sockaddr_in serv_addr;
@@ -56,6 +56,29 @@ int main(int argc,char *argv[])
     
     return 0;
 }
- */
+
+
+
+int fileMain(void)  {
+    
+    int fd;
+    char buf[] = "let's go!\n";
+    
+    fd = open("data.txt", O_CREAT|O_WRONLY|O_TRUNC);
+    if (fd == -1) {
+        error_handling("open() error");
+    }
+     printf("file descriptor :%d \n",fd);
+    
+    if (write(fd, buf, sizeof(buf))==-1) {
+        error_handling("write() error");
+    }
+    
+    close(fd);
+    
+    return 0;
+}
+
+
 @end
 

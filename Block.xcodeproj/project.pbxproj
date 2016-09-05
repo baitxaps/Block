@@ -29,6 +29,9 @@
 		772654F01D5F33F00082E13D /* StatusEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654EF1D5F33F00082E13D /* StatusEntity.m */; };
 		772654F71D5F45D90082E13D /* NSObject+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654F61D5F45D90082E13D /* NSObject+Model.m */; };
 		772654FA1D5F483E0082E13D /* NSObject+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 772654F91D5F483E0082E13D /* NSObject+Log.m */; };
+		7765401B1D7BF3A40046BB18 /* RHCAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7765401A1D7BF3A40046BB18 /* RHCAnimation.m */; };
+		7765401F1D7C1C640046BB18 /* file_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 7765401E1D7C1C640046BB18 /* file_open.c */; };
+		776540211D7C21830046BB18 /* file_open.h in Sources */ = {isa = PBXBuildFile; fileRef = 776540201D7C21830046BB18 /* file_open.h */; };
 		77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */ = {isa = PBXBuildFile; fileRef = 77852F4C1D4EF4B700BB967D /* DulNode.c */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +103,10 @@
 		772654F81D5F483E0082E13D /* NSObject+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Log.h"; sourceTree = "<group>"; };
 		772654F91D5F483E0082E13D /* NSObject+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Log.m"; sourceTree = "<group>"; };
 		772654FB1D5F50BA0082E13D /* iOS9新特性.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "iOS9新特性.txt"; sourceTree = "<group>"; };
+		776540191D7BF3A40046BB18 /* RHCAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHCAnimation.h; sourceTree = "<group>"; };
+		7765401A1D7BF3A40046BB18 /* RHCAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHCAnimation.m; sourceTree = "<group>"; };
+		7765401E1D7C1C640046BB18 /* file_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = file_open.c; sourceTree = "<group>"; };
+		776540201D7C21830046BB18 /* file_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_open.h; sourceTree = "<group>"; };
 		7784A74F1D60BAD600084BBA /* RunLoop */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RunLoop; sourceTree = "<group>"; };
 		77852F481D4EF32000BB967D /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
 		77852F4C1D4EF4B700BB967D /* DulNode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DulNode.c; sourceTree = "<group>"; };
@@ -190,12 +197,14 @@
 		770B742C1D487CDF0069BC30 /* Socket */ = {
 			isa = PBXGroup;
 			children = (
+				7765401E1D7C1C640046BB18 /* file_open.c */,
+				776540201D7C21830046BB18 /* file_open.h */,
 				770B74401D48803C0069BC30 /* socket_manager.m */,
 				770B74411D48803C0069BC30 /* socket_manager.h */,
-				770B74421D48803C0069BC30 /* server_socket.m */,
 				770B74431D48803C0069BC30 /* server_socket.h */,
-				770B743D1D48802F0069BC30 /* client_socket.m */,
+				770B74421D48803C0069BC30 /* server_socket.m */,
 				770B743E1D48802F0069BC30 /* client_socket.h */,
+				770B743D1D48802F0069BC30 /* client_socket.m */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -238,6 +247,8 @@
 				770B748F1D48BD6F0069BC30 /* DS_00.png */,
 				770B74811D488CB50069BC30 /* RHCHeaders.h */,
 				770B74851D48AA3E0069BC30 /* RHCMacros.h */,
+				776540191D7BF3A40046BB18 /* RHCAnimation.h */,
+				7765401A1D7BF3A40046BB18 /* RHCAnimation.m */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -302,6 +313,9 @@
 		773297161C7C4870001F853F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "hairong chen";
 				TargetAttributes = {
@@ -338,9 +352,11 @@
 				770B743C1D4880240069BC30 /* CPlusplus.cpp in Sources */,
 				770B74841D48A93D0069BC30 /* Node.c in Sources */,
 				77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */,
+				7765401B1D7BF3A40046BB18 /* RHCAnimation.m in Sources */,
 				770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */,
 				770B746F1D4881FF0069BC30 /* character.c in Sources */,
 				770B74251D487C670069BC30 /* main.m in Sources */,
+				776540211D7C21830046BB18 /* file_open.h in Sources */,
 				770B74611D4881210069BC30 /* queue.c in Sources */,
 				770B74301D487CDF0069BC30 /* SqList.c in Sources */,
 				770B74691D48818A0069BC30 /* stack.c in Sources */,
@@ -349,6 +365,7 @@
 				772654FA1D5F483E0082E13D /* NSObject+Log.m in Sources */,
 				770B74351D487FEE0069BC30 /* thread.c in Sources */,
 				770B74451D48803C0069BC30 /* server_socket.m in Sources */,
+				7765401F1D7C1C640046BB18 /* file_open.c in Sources */,
 				770B74441D48803C0069BC30 /* socket_manager.m in Sources */,
 				770B745A1D48809E0069BC30 /* Algorithm.m in Sources */,
 				772654F01D5F33F00082E13D /* StatusEntity.m in Sources */,
@@ -449,6 +466,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.11;
 			};
 			name = Debug;
 		};
@@ -461,6 +479,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.11;
 			};
 			name = Release;
 		};
