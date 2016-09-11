@@ -5,6 +5,8 @@
 //  Created by hairong chen on 16/2/23.
 //  Copyright © 2016年 hairong chen. All rights reserved.
 //
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
 
 #import "Algorithm.h"
 #define ERROR -1
@@ -394,9 +396,9 @@ void execCmd(){
     
     printf("%ld",sizeof(InneerInfo()))   ;
     
-//    char *app = zipString("aaaaaa1eee0");
-//    printf("%s\n",app);
-//    free(app);
+    //    char *app = zipString("aaaaaa1eee0");
+    //    printf("%s\n",app);
+    //    free(app);
     
     ListNode *listNode = create()   ;
     
@@ -526,14 +528,14 @@ void execContainer(){
     
 }
 
- void execFraction(){
+void execFraction(){
     double fraction, integer;
     double number = 100000.567;
     fraction = modf(number, &integer);
     printf("The whole and fractional parts of %lf are %lf and %lf\n",
            number, integer, fraction);
-     
-     dataSort();
+    
+    dataSort();
 }
 
 void dataSort(){
@@ -563,7 +565,7 @@ void dataSort(){
         }
     }];
     
-   NSLog(@"sortedArray2排序后:%@",sortArray2);
+    NSLog(@"sortedArray2排序后:%@",sortArray2);
 }
 
 + (instancetype)shareInstance{
@@ -586,6 +588,76 @@ void dataSort(){
         num /=2;
     }
     return str;
+}
+
+
+/**
+ *  加密方式,MAC算法: HmacSHA256
+ *
+ *  @param plaintext 要加密的文本
+ *  @param key       秘钥
+ *
+ *  @return 加密后的字符串
+ */
++ (NSString *)hmac:(NSString *)plaintext withKey:(NSString *)key
+{
+    const char  *cKey  = [key cStringUsingEncoding:NSUTF8StringEncoding];
+    const char  *cData = [plaintext cStringUsingEncoding:NSUTF8StringEncoding];
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMACData = [NSData dataWithBytes:cHMAC length:sizeof(cHMAC)];
+    
+    const unsigned char *buffer = (const unsigned char *)[HMACData bytes];
+    NSMutableString *HMAC = [NSMutableString stringWithCapacity:HMACData.length * 2];
+    for (int i = 0; i < HMACData.length; ++i){
+        [HMAC appendFormat:@"%02x", buffer[i]];
+    }
+    // dee44356fd8414ea27220e948a79d76a75ad4c94c605af77cf26c22752bdd37b
+  //   HMAC   =[self base64Encode:HMAC];
+    return HMAC;
+}
+
+
++ (NSString *)hmac1:(NSString *)plaintext withKey:(NSString *)key {
+    
+    const char  *cKey  = [key cStringUsingEncoding:NSUTF8StringEncoding];
+    const char  *cData = [plaintext cStringUsingEncoding:NSUTF8StringEncoding];
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMACData = [NSData dataWithBytes:cHMAC length:sizeof(cHMAC)];
+
+    
+    NSString *base64 = [HMACData base64EncodedStringWithOptions:0];
+    
+    return base64;
+}
+
+
++ (NSString *)base64Encode:(NSString *)string
+{
+    if (string == nil ) {
+        return nil;
+    }
+    // <64656534 34333536 66643834 31346561 32373232 30653934 38613739 64373661 37356164 34633934 63363035 61663737 63663236 63323237 35326264 64333762>
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedString = [data base64EncodedStringWithOptions:0];
+    
+    // ZGVlNDQzNTZmZDg0MTRlYTI3MjIwZTk0OGE3OWQ3NmE3NWFkNGM5NGM2MDVhZjc3Y2YyNmMyMjc1MmJkZDM3Yg==
+    return encodedString;
+}
+
++ (NSString *)translateToMD5:(NSString *)input
+{
+    const char *cStr = [input UTF8String];
+    unsigned char digest[16];
+    CC_MD5( cStr, (CC_LONG)strlen(cStr), digest ); // This is the md5 call
+    
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x", digest[i]];
+    // 0039f867cdab87bd35821bd60133c436
+    return  output;
 }
 
 

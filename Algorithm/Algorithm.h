@@ -39,4 +39,9 @@ unsigned char symmetry(long n);
 _Node* setItem( _Node *pHead,int m) ;
 int search(int a[],int x,int low,int high);
 -(NSString *)decailToBinayr:(NSInteger)num;
+
++ (NSString *)hmac:(NSString *)plaintext withKey:(NSString *)key;
++ (NSString *)base64Encode:(NSString *)string;
++ (NSString *)translateToMD5:(NSString *)input;
++ (NSString *)hmac1:(NSString *)plaintext withKey:(NSString *)key ;
 @end

@@ -9,6 +9,7 @@
 #import "RHCHeaders.h"
 #include "CPlusplus.hpp"
 
+
 void GetMemory(char *p) {
     p = (char *)malloc(100);
 }
@@ -45,6 +46,18 @@ MyBlock genBlock(){
 
 
 int main(int argc, const char * argv[]) {
+    
+    NSString *hmac =   [Algorithm hmac:@"rhc" withKey:@"rhc"];
+    
+    NSLog(@"%@",hmac);
+    
+    NSString *hmac1 =   [Algorithm hmac1:@"rhc" withKey:@"rhc"];
+    NSLog(@"%@",hmac1);
+    
+    NSString *md5 = [Algorithm translateToMD5:@"rhc"];
+    NSLog(@"%@",md5);
+    
+    
     dispatch_queue_t currnet = dispatch_queue_create("baitxps/csdn.net", DISPATCH_QUEUE_CONCURRENT);
     
     dispatch_async(currnet, ^{
@@ -73,6 +86,8 @@ int main(int argc, const char * argv[]) {
 //    MyBlock outBlock = genBlock();
 //    long result = outBlock(1);
 //    NSLog(@"%ld",result);
+    
+    
     
     Algorithm *rithm =  [Algorithm new];
     
