@@ -13,5 +13,5 @@
 int main_client_socket(int argc,char *argv[]);
 
 int fileMain(void) ;
-
+int endian_conv() ;
 @end

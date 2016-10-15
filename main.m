@@ -47,6 +47,9 @@ MyBlock genBlock(){
 
 int main(int argc, const char * argv[]) {
     
+    endian_conv();
+    return 0;
+    
     NSString *hmac =   [Algorithm hmac:@"rhc" withKey:@"rhc"];
     
     NSLog(@"%@",hmac);
