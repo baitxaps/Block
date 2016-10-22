@@ -140,15 +140,19 @@ int endian_conv() {
     
     
 // initional
-    struct sockaddr_in addrinit;
+    int serv_sock;
+    struct sockaddr_in serv_addr;
     char *serv_ip = "211,127.168.13";
     char *serv_port = "9190";
-    memset(&addrinit,0,sizeof(addrinit));
+    // 创建服务器端套接字（监听套接字）
+    serv_sock = socket(PF_INET, SOCK_STREAM, 0);
     
-    addrinit.sin_family = AF_INET;
-    addrinit.sin_addr.s_addr = inet_addr(serv_ip);
-    addrinit.sin_port = htons(atoi(serv_port));
-    
+    // 地址信息初始化
+    memset(&serv_addr,0,sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = inet_addr(serv_ip);
+    serv_addr.sin_port = htons(atoi(serv_port));
+    // 分配地址信息
     bind(serv_sock,(struct sockaddr *)&serv_addr,sizeof(serv_addr));
     // ...
     

@@ -13,9 +13,7 @@ void error_handling(char *message);
 
 @end
 
-
 // 构建接电话套接字
-
 /*
 一、套接字创建过程
 1.调用socket函数（安装电话机）时进行的对话。成功时返回文件描述，失败时返回－1
@@ -338,6 +336,19 @@ int accetp(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
  return 0;
  }
  
+ 8.基于TCP的服务端/客户端
+ 根据数据传输方式不同，基于网络协议的套接字一般分为TCP套接字(也叫基于流stream的套接字)和UDP套接字。
+ 
+ TCP/IP协议栈(Stack,层）eg:
+            应用层
+            /   \
+          TCP   UDP
+           \     /
+            IP层
+             |
+            链路层
+ 
+ 各层可能通过操作系统等软件实现，也可能通过类似NIC的硬件设备实现
  
  
  
