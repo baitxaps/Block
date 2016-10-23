@@ -9,6 +9,14 @@
 #import "RHCHeaders.h"
 #include "CPlusplus.hpp"
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<fcntl.h>
+#include<unistd.h>
+#include<sys/socket.h>
+#include <string.h>
+#include <arpa/inet.h>
+#import "socket_manager.h"
 
 void GetMemory(char *p) {
     p = (char *)malloc(100);
@@ -44,10 +52,10 @@ MyBlock genBlock(){
 }
 
 
-
 int main(int argc, const char * argv[]) {
     
-    endian_conv();
+
+   // endian_conv();
     return 0;
     
     NSString *hmac =   [Algorithm hmac:@"rhc" withKey:@"rhc"];

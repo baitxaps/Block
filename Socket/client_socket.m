@@ -159,6 +159,47 @@ int endian_conv() {
     return 0;
 }
 
+#define BUF_SIZE 1024
+int echo_clientc(int argc,char *argv[]) {
+    int sock;
+    char message[BUF_SIZE];
+    int str_len;
+    struct sockaddr_in serv_adr;
+    if (argc != 3) {
+        printf("Usage :%s <IP> <Port> \n",argv[0]);
+        exit(1);
+    }
+    
+    sock = socket(PF_INET, SOCK_STREAM, 0);
+    if (sock == -1) {
+        error_handling("socket error");
+    }
+    memset(&serv_adr, 0, sizeof(serv_adr));
+    serv_adr.sin_family = AF_INET;
+    serv_adr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serv_adr.sin_port = htons(atoi("9190"));
+    if (connect(sock, (struct sockaddr *)&serv_adr, sizeof(serv_adr))== -1) {
+        error_handling("connect error");
+    }else {
+        puts("Conneted...");
+    }
+    while (1) {
+        fputc("input messae(Q to quit):", stdout);
+        fgets(message,BUF_SIZE,stdin);
+        
+        if (!strcmp(message, "q\n") || !strcmp(message, "Q\n")) {
+            break;
+        }
+        write(sock, message, strlen(message));
+        str_len = read(sock, message, BUF_SIZE-1);
+        
+        message[str_len]= 0;
+        printf("message from server:%s",message);
+    }
+    close(sock);
+    
+    return 0;
+}
 
 @end
 

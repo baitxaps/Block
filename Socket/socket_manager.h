@@ -349,22 +349,202 @@ int accetp(int sockfd,struct sockaddr *addr,socklen_t *addrlen);
             链路层
  
  各层可能通过操作系统等软件实现，也可能通过类似NIC的硬件设备实现
+0>开放系统
+ 以多个标准为依据设计的系统称为开放系统，TCP／IP协议栈也属于其中之一
+ 优点： 路由器来完成IP层交互任务，网卡：网卡制造商都会遵守链路层的协议标准
+ 
+ 1>链路层：是物理链接领或标准的结果，也是最基本的领域，专门定义LAN，WAN，MAN等网络标准
+ 2>IP层：准备好物理连接后就要传输数据。为了在复杂的网络中传输数据，首先需要考虑路径的选择，向目标传输
+ 数据需要经过哪条路径？解决此问题就是IP层，该层使用的协议就是IP。IP本身是面向消息的，不可靠的协议。每次
+ 传输数据时会帮我们选择路径，但并不一致。如果传输中发生路径错误，则选择其他路径；但如果发生数据丢失或
+ 错误，则无法解决--IP协议无法应对数据错误
+ 3>TCP/UDP层：IP层解决数据传输中的路径选择问题，只需照此路径传数据即可。TCP和UDP层以IP层提供的路径信息为
+ 基础完成实际数据传输--传输层。UDP比TCP简单
+ TCP与IP层二者关系：
+ IP层只关注1个数据包(数据传输的基本单位)的传输过程。因此，即使传输多个数据包，每个数据包也是由IP层实际传输的
+ ，也就是说传输本身是不可靠的。若只利用IP层传输数据，则有可能导致后传输的数据包B比先传输的数据包A提早到达。另外
+ ，传输的数据包A/B/C中有可能收到A和C，甚至收到的C可能已损毁
+ TCP如果数据交换过程中可以确认对方已收到数据，并重传丢失的数据，那么即便IP层不保证数据传输，这类通信也是可靠的
+ 4>应用层：
+ 上述内容是套接字通信过程中自动处理的。选择数据传输路径，数据确认过程都被隐藏到套接字内部。而与其说是“隐藏”，倒不
+ 如“使程序员从这些细节中解放出来”的表达更为准确。程序员编程时无需考虑这些过程，但这并不意味着不用掌握这些短识。只有
+ 掌握了这些理论，才能编写出符合需求的网络程序
+ 总之，向各位提供的工具就是套接字，只需利用套接字编出程序即可。编写软件的过程中，需要根据程序特点决定服务器和客户端之
+ 间的数据传输规则---应用层协议。
+ 网络编程的大部份内容就是设计并实现应用层协议
+ 
+ 8.1 实现基于TCP的服务器端/客户端
+ TCP的服务器端默认的函数调用顺序：
+ socket() 创建套接字
+    |
+    V
+ bind()分配套接字地址
+    |
+    V
+ listen()等待连接请求状态
+    |
+    V
+ accept() 充许连接
+    |
+    V
+ read()/write() 数据交换
+    |
+    V
+ close() 断开连接
+ 
+ socket,bind前面已说明，bind()(给套接字分配了地址，接下来就要通过调用listen（）进入等待连接请求状态
+ 只有调用了listen(),客户端才能进入可发出连接请求的状态----这时客户端才能调用connect()(若提前调用将发生错误）
+ int listen(int sock,int backlog);// 成功时返回0,失败时返回-1
+ sock:希望进入等待连接状态的套接字文件描述符，传递的描述符套接字参数为服务端套接字（监听套接字）
+ backlog:连接请求等待队列(Queue)的长度，若为5,则队列长度为5，表示最多使5个连接请求进入队列。（与服务端的特性有关，
+ 像频繁接收请求的Web服务端至少应为15.另外，连接请求队列的大小始终根据实验结果而定。）
+ 
+ int accept(int sock,struct sockaddr *addr,socklen_t *addrlen);//成功返回创建的套接字文件描述符，失败返回-1;
+ sock:服务器套接字的文件描述符
+ addr:保存发起连接请求的客户端地址信息的变量地址值，调用函数后向传递来的地址变量参数填充客房端地址信息
+ addrlen:第二个参数addr结构体的长度，但时存有长度的变量地址。函数调用完成后，该变量即被填入客户端地址长度 
+ 
+ accept()受理连接请求等待队列中待处理的客户端连接请求。函数调用成功时，accetp()内部将产生用于数据I/O的套接字，并返回其
+ 文件描述符。需要强调的是，套接字是自动创建的，并自动与发起连接请求的客户端建立连接。
+调用accept()从队头取1个连接请求与客户端建立连接，并返回创建的套接字文件描述符。另外，调用accetp()时若等待队列为空，则
+ accept()不会返回，直到队列中出现新的客户端连接
+ 
+ 8.2 TCP客户端的默认函数调用顺序
+ socket() 创建套接字
+    |
+    V
+ connect()请求连接
+    |
+    V
+ read()/write() 数据交换
+    |
+    V
+ close() 断开连接
+ 
+ 与服务端相比，区别就在于"请求连接“，它是创建客户端套接字后向服务器端发起的连接请求。服务器端调用
+ listen()创建连接请求等待队列，之后客户端即可请求连接。
+ 
+ int connect(int sock, struct sockaddr *servaddr, socklen_t addrlen);// 成功时返回0,失败时返回-1;
+ sock:客户端套接字文件描述符
+ servaddr:保存目标服务器端地址信息的变量地址值
+ addrlen:以字节为单位传递已传递给第二个结构体参数servaddr的地址变量找度
+ 
+ 客户端调用connect()，发生以下情况之一才会返回（完成函数调用）
+ 1>服务器端接收连接请求
+ 2>发生断网等异常情况而中断连接请求
+ 需要注意，所谓的“接收连接”并不意味着服务器端调用accept(),其实是服务端把连接请求信息记录到等待队列。因此connect()
+ 返回后并不立即进行数据交换
+ 
+ 3>实现服务端必经过过程之一就是给套接字分配IP和端口号。但客户实现过程中并未出现套接字地址分配，而是创建套接字后立即调用
+ connect(). 客户端调用connect()时，操作系统，更准确地说是在内核中，IP用计算机（主机）的IP，端口随机分配地址---客户端
+ 的IP和端口调用connect()时自动分配，无需调用标记的bind()进行分配
+ 
+ 8.3 基于TCP的服务端／客户端函数调用关系
+ 前面讲解TCP服务器／客户端的实现顺序，实际上二者并非相互独立
+    服务器
+ socket() 创建套接字
+    |
+    V
+ bind()分配套接字地址                      客户端
+    |                                   socket() 创建套接字
+    V                                         |
+ listen()等待连接请求状态                        V
+    |   <---------------------------—--connect()请求连接
+    V                      or       /         |
+ accept() 充许连接                   /
+    |   <------------------------  /          |
+    V                                         V
+ read()/write() 数据交换  <------->     read()/write() 数据交换
+    |                                         |
+    V                                         V
+ close() 断开连接   <------------->      close() 断开连接
  
  
+ 总体流程整理：服务器端创建套接字后连续调用bind，listen函数进入等待状态，客户端通过调用connect()
+ 发起连接请求.需要注意的是，客户端只能等到服务端调用listen()后才能调connect().同时要清楚，客户端调用
+ connect()前，服务器端有可能率先调用accetp().当然，此时服务端在调用accept()时进入阻塞(blocking)状
+ 态，直到客户端调用connect()为止
  
+  8.4实现迭代服务器端／客户端
+ 1>实现迭代服务器端
+ 编写回声（echo)服务端／客户端----服务端将客户端传输的字符串数据原封不动地传回客户端，就像回声一样。
+ 之前的hello world服务端处理完发1个客户端连接请求即退出，连接请求等待队列实际没有太大意义。
+ 设置好等待队列的大小后，应向所有客户疫提供服务。如果想继续受理后续的客户疫连接请求，最简单的办法就是
+ 插入循环语句反复调用accetp()
  
+ socket() 创建套接字
+    |
+    V
+ bind()分配套接字地址
+    |
+    V
+ listen()等待连接请求状态
+    | <--------------------
+    V                     |
+ accept() 充许连接          |
+    |                     |
+    V                     |
+ read()/write() 数据交换    |
+    |---------------------
+    V
+ close() 断开连接
+ 调用accept()后，紧接着调用I/O相关的read(),write(),然后调用close()，这并非针对服务端套接字，而
+ 是针对accept()调用时创建的套接字。调用close()就意味着结束了针对某一客户端的服务，此时如果还想服务于
+ 其他客户端，就要重新调用accept()
  
+2>实现迭代服务器端/客户端
+ 前面讲的就是迭代服务器端。妈即使服务端以迭代方式运转，客户端代码亦无太大区别。
+ 程序的基本运行方式：
+ .服务端在同一时刻只与一个客户端相连，并提供回声服务
+ .服务端依次向5个客户端提供服务并退出
+ .客户端接收用户输入的字符串并发送到服务端
+ .服务端将接收到的字符串数据传回客户端，即“回声”
+ .服务端与客户端之间的字符串回声一直执行到客户端输入Q为止
  
+ #define BUF_SIZE 1024
+ int echo_serverc(int argc,char *argv[]) {
+ int serv_sock,clnt_sock;
+ char message[BUF_SIZE];
+ int str_len,i;
  
+ struct sockaddr_in serv_adr,clnt_adr;
+ socklen_t clnt_adr_sz;
  
+ if (argc!=2) {
+ printf("usege:%s<port>\n",argv[0]);
+ exit(1);
+ }
+ serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+ if (serv_sock == -1) {
+ error_handling("socket() error");
+ }
+ memset(&serv_adr, 0, sizeof(serv_adr));
+ serv_adr.sin_family = AF_INET;
+ serv_adr.sin_addr.s_addr= htonl(INADDR_ANY);
+ serv_adr.sin_port= htons(atoi(argv[1]));
+ if (bind(serv_sock, (struct sockaddr *)&serv_adr, sizeof(serv_adr))== -1) {
+ error_handling("bind() error");
+ }
  
+ if (listen(serv_sock, 5) == -1) {
+ error_handling("listen() error");
+ }
+ clnt_adr_sz = sizeof(clnt_adr);
+ for ( i = 0; i < 5; i ++) {
+ clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_adr, &clnt_adr_sz);
+ if (clnt_sock == -1) {
+ error_handling("accept() error");
+ }else {
+ printf("Connected client %d \n",i + 1);
+ }
+ while ((str_len = (int)read(clnt_sock, message, BUF_SIZE))!=0) {
+ write(clnt_sock, message, str_len);
+ }
+ close(serv_sock);
+ }
  
- 
- 
- 
- 
- 
- 
+ return 0;
+ }
  
  
  
