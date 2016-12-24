@@ -25,6 +25,8 @@
 		770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746B1D4881CD0069BC30 /* polymorphic.c */; };
 		770B746F1D4881FF0069BC30 /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746E1D4881FF0069BC30 /* character.c */; };
 		770B747F1D4882510069BC30 /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 770B747D1D4882510069BC30 /* block.mm */; };
+		77494E1F1E11680C00E8B2AC /* FilesOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 77494E1E1E11680C00E8B2AC /* FilesOp.m */; };
+		776540211D7C21830046BB18 /* file_open.h in Sources */ = {isa = PBXBuildFile; fileRef = 776540201D7C21830046BB18 /* file_open.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,7 +54,6 @@
 		770B743A1D4880240069BC30 /* CPlusplus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CPlusplus.hpp; sourceTree = "<group>"; };
 		770B743B1D4880240069BC30 /* CPlusplus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlusplus.cpp; sourceTree = "<group>"; };
 		770B743D1D48802F0069BC30 /* client_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = client_socket.m; sourceTree = "<group>"; };
-		770B743E1D48802F0069BC30 /* client_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_socket.h; sourceTree = "<group>"; };
 		770B74401D48803C0069BC30 /* socket_manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = socket_manager.m; sourceTree = "<group>"; };
 		770B74411D48803C0069BC30 /* socket_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket_manager.h; sourceTree = "<group>"; };
 		770B74421D48803C0069BC30 /* server_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = server_socket.m; sourceTree = "<group>"; };
@@ -75,7 +76,11 @@
 		770B746E1D4881FF0069BC30 /* character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = character.c; sourceTree = "<group>"; };
 		770B747D1D4882510069BC30 /* block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = block.mm; sourceTree = "<group>"; };
 		770B747E1D4882510069BC30 /* block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
-		7732971E1C7C4870001F853F /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Block; path = "/Users/hairongchen/Documents/设计模式之禅/Block/build/Debug/Block"; sourceTree = "<absolute>"; };
+		77494E1D1E11680C00E8B2AC /* FilesOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesOp.h; sourceTree = "<group>"; };
+		77494E1E1E11680C00E8B2AC /* FilesOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesOp.m; sourceTree = "<group>"; };
+		776540201D7C21830046BB18 /* file_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_open.h; sourceTree = "<group>"; };
+		77E091251DBE48E400EEC0E1 /* echo_client.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_client.c.txt; sourceTree = "<group>"; };
+		77E091261DBE491D00EEC0E1 /* echo_server.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_server.c.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,7 +168,8 @@
 				770B74421D48803C0069BC30 /* server_socket.m */,
 				770B74431D48803C0069BC30 /* server_socket.h */,
 				770B743D1D48802F0069BC30 /* client_socket.m */,
-				770B743E1D48802F0069BC30 /* client_socket.h */,
+				77E091251DBE48E400EEC0E1 /* echo_client.c.txt */,
+				77E091261DBE491D00EEC0E1 /* echo_server.c.txt */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -189,6 +195,7 @@
 		773297151C7C4870001F853F = {
 			isa = PBXGroup;
 			children = (
+				77494E1C1E11680C00E8B2AC /* Others */,
 				770B74701D4882300069BC30 /* Block */,
 				770B742B1D487CDF0069BC30 /* RunLoop */,
 				770B742C1D487CDF0069BC30 /* Socket */,
@@ -200,6 +207,15 @@
 				770B74261D487CAD0069BC30 /* Algorithm */,
 				770B74241D487C670069BC30 /* main.m */,
 			);
+			sourceTree = "<group>";
+		};
+		77494E1C1E11680C00E8B2AC /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				77494E1D1E11680C00E8B2AC /* FilesOp.h */,
+				77494E1E1E11680C00E8B2AC /* FilesOp.m */,
+			);
+			path = Others;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,7 +235,6 @@
 			);
 			name = Block;
 			productName = Block;
-			productReference = 7732971E1C7C4870001F853F /* Block */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -265,6 +280,7 @@
 				770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */,
 				770B746F1D4881FF0069BC30 /* character.c in Sources */,
 				770B74251D487C670069BC30 /* main.m in Sources */,
+				776540211D7C21830046BB18 /* file_open.h in Sources */,
 				770B74611D4881210069BC30 /* queue.c in Sources */,
 				770B74301D487CDF0069BC30 /* SqList.c in Sources */,
 				770B74691D48818A0069BC30 /* stack.c in Sources */,
@@ -275,6 +291,7 @@
 				770B74441D48803C0069BC30 /* socket_manager.m in Sources */,
 				770B745A1D48809E0069BC30 /* Algorithm.m in Sources */,
 				770B74631D4881210069BC30 /* binaryTree.c in Sources */,
+				77494E1F1E11680C00E8B2AC /* FilesOp.m in Sources */,
 				770B74361D487FEE0069BC30 /* runloop.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
