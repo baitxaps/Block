@@ -163,7 +163,7 @@ int endian_conv() {
 int echo_clientc(int argc,char *argv[]) {
     int sock;
     char message[BUF_SIZE];
-    int str_len;
+    long str_len;
     struct sockaddr_in serv_adr;
     if (argc != 3) {
         printf("Usage :%s <IP> <Port> \n",argv[0]);
@@ -184,7 +184,7 @@ int echo_clientc(int argc,char *argv[]) {
         puts("Conneted...");
     }
     while (1) {
-        fputc("input messae(Q to quit):", stdout);
+        fputs("input messae(Q to quit):", stdout);
         fgets(message,BUF_SIZE,stdin);
         
         if (!strcmp(message, "q\n") || !strcmp(message, "Q\n")) {

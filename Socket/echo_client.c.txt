@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<fcntl.h>
+#include<unistd.h>
+#include<sys/socket.h>
+#include <string.h>
+#include <arpa/inet.h>
+
+#define BUF_SIZE 100
+
+void error_handling(char *message){
+    fputs(message, stderr);
+    fputc('\n', stderr);
+    exit(1);
+}
+
+    int main(int argc, const char * argv[])  {
+        int sock;
+        char message[BUF_SIZE];
+        long str_len;
+        struct sockaddr_in serv_adr;
+//    if (argc != 3) {
+//        printf("Usage :%s <IP> <Port> \n",argv[0]);
+//        exit(1);
+//    }
+
+        sock = socket(PF_INET, SOCK_STREAM, 0);
+    if (sock == -1) {
+        error_handling("socket error");
+    }
+    memset(&serv_adr, 0, sizeof(serv_adr));
+    serv_adr.sin_family = AF_INET;
+    serv_adr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serv_adr.sin_port = htons(atoi("9190"));
+    if (connect(sock, (struct sockaddr *)&serv_adr, sizeof(serv_adr))== -1) {
+        error_handling("connect error");
+    }else {
+        puts("Conneted...");
+    }
+    while (1) {
+        fputs("input messae(Q to quit):", stdout);
+        fgets(message,BUF_SIZE,stdin);
+
+        if (!strcmp(message, "q\n") || !strcmp(message, "Q\n")) {
+            break;
+        }
+        write(sock, message, strlen(message));
+        str_len = read(sock, message, BUF_SIZE-1);
+
+        message[str_len]= 0;
+        printf("message from server:%s",message);
+    }
+    close(sock);
+
+    return 0;
+//    int fd;
+//    char buf[] = "let's go!\n";
+//
+//    fd = open("data.txt", O_CREAT|O_WRONLY|O_TRUNC);
+//    if (fd == -1) {
+//        error_handling("open() error");
+//    }
+//     printf("file descriptor :%d \n",fd);
+//
+//    if (write(fd, buf, sizeof(buf))==-1) {
+//        error_handling("write() error");
+//    }
+//
+//    close(fd);
+
+//    int fd;
+//    char buf[BUF_SIZE];
+//
+//    fd = open("data.txt", O_RDONLY);
+//    if (fd == -1) {
+//        error_handling("open() error");
+//    }
+//    printf("file descriptor :%d \n",fd);
+//
+//    if (read(fd, buf, sizeof(buf))==-1) {
+//        error_handling("read() error");
+//    }
+//     printf("file data :%s \n",buf);
+//    close(fd);
+
+
+int fd1,fd2,fd3;
+fd1 = socket(PF_INET,SOCK_STREAM,0);
+fd2 = open("test.dat",O_CREAT|O_WRONLY|O_TRUNC);
+fd3 = socket(PF_INET,SOCK_STREAM,0);
+printf("file descriptor 1 :%d \n",fd1);
+printf("file descriptor 2 :%d \n",fd2);
+printf("file descriptor 3 :%d \n",fd3);
+close(fd1);
+close(fd2);
+close(fd3);
+
+return 0;
+}
+

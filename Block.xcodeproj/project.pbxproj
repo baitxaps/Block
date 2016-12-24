@@ -32,6 +32,7 @@
 		7765401B1D7BF3A40046BB18 /* RHCAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7765401A1D7BF3A40046BB18 /* RHCAnimation.m */; };
 		7765401F1D7C1C640046BB18 /* file_open.c in Sources */ = {isa = PBXBuildFile; fileRef = 7765401E1D7C1C640046BB18 /* file_open.c */; };
 		776540211D7C21830046BB18 /* file_open.h in Sources */ = {isa = PBXBuildFile; fileRef = 776540201D7C21830046BB18 /* file_open.h */; };
+		7782A38F1E0EC4190021F8EA /* FilesOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7782A38E1E0EC4190021F8EA /* FilesOp.m */; };
 		77852F4E1D4EF4B700BB967D /* DulNode.c in Sources */ = {isa = PBXBuildFile; fileRef = 77852F4C1D4EF4B700BB967D /* DulNode.c */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +108,8 @@
 		7765401A1D7BF3A40046BB18 /* RHCAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHCAnimation.m; sourceTree = "<group>"; };
 		7765401E1D7C1C640046BB18 /* file_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = file_open.c; sourceTree = "<group>"; };
 		776540201D7C21830046BB18 /* file_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_open.h; sourceTree = "<group>"; };
+		7782A38D1E0EC4190021F8EA /* FilesOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesOp.h; sourceTree = "<group>"; };
+		7782A38E1E0EC4190021F8EA /* FilesOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesOp.m; sourceTree = "<group>"; };
 		7784A74F1D60BAD600084BBA /* RunLoop */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RunLoop; sourceTree = "<group>"; };
 		77852F481D4EF32000BB967D /* Block */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Block; sourceTree = BUILT_PRODUCTS_DIR; };
 		77852F4C1D4EF4B700BB967D /* DulNode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DulNode.c; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 		77852F4F1D4EF5A800BB967D /* DulNode001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode001.png; sourceTree = "<group>"; };
 		77852F511D4F009800BB967D /* DulNode002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode002.png; sourceTree = "<group>"; };
 		77852F521D4F0DB900BB967D /* DulNode003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DulNode003.png; sourceTree = "<group>"; };
+		77E091251DBE48E400EEC0E1 /* echo_client.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_client.c.txt; sourceTree = "<group>"; };
+		77E091261DBE491D00EEC0E1 /* echo_server.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_server.c.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +210,8 @@
 				770B74421D48803C0069BC30 /* server_socket.m */,
 				770B743E1D48802F0069BC30 /* client_socket.h */,
 				770B743D1D48802F0069BC30 /* client_socket.m */,
+				77E091251DBE48E400EEC0E1 /* echo_client.c.txt */,
+				77E091261DBE491D00EEC0E1 /* echo_server.c.txt */,
 			);
 			path = Socket;
 			sourceTree = "<group>";
@@ -249,6 +256,8 @@
 				770B74851D48AA3E0069BC30 /* RHCMacros.h */,
 				776540191D7BF3A40046BB18 /* RHCAnimation.h */,
 				7765401A1D7BF3A40046BB18 /* RHCAnimation.m */,
+				7782A38D1E0EC4190021F8EA /* FilesOp.h */,
+				7782A38E1E0EC4190021F8EA /* FilesOp.m */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -356,6 +365,7 @@
 				770B746C1D4881CD0069BC30 /* polymorphic.c in Sources */,
 				770B746F1D4881FF0069BC30 /* character.c in Sources */,
 				770B74251D487C670069BC30 /* main.m in Sources */,
+				7782A38F1E0EC4190021F8EA /* FilesOp.m in Sources */,
 				776540211D7C21830046BB18 /* file_open.h in Sources */,
 				770B74611D4881210069BC30 /* queue.c in Sources */,
 				770B74301D487CDF0069BC30 /* SqList.c in Sources */,
