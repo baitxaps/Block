@@ -18,14 +18,19 @@
 #import "block.h"
 #import "GCD.h"
 #import "Algorithm.h"
+#import "Pthread.h"
 
 int main(int argc, const char * argv[]) {
     //Algorithm
-    execCmd();
-
-    //GCD
-    GCD *gcd = [GCD new];
-    [gcd GCDTest];
+//    execCmd();
+//
+//    //GCD
+//    GCD *gcd = [GCD new];
+//    [gcd GCDTest];
+    
+    Pthread *pt = Pthread.new;
+    [pt execPthread];
+    return 0;
     
     //block
     block *b = [block new];

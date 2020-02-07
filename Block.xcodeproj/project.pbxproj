@@ -26,6 +26,7 @@
 		770B746F1D4881FF0069BC30 /* character.c in Sources */ = {isa = PBXBuildFile; fileRef = 770B746E1D4881FF0069BC30 /* character.c */; };
 		770B747F1D4882510069BC30 /* block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 770B747D1D4882510069BC30 /* block.mm */; };
 		77494E1F1E11680C00E8B2AC /* FilesOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 77494E1E1E11680C00E8B2AC /* FilesOp.m */; };
+		7753852923ED076F007920C4 /* Pthread.h in Sources */ = {isa = PBXBuildFile; fileRef = 7753852823ED076F007920C4 /* Pthread.h */; };
 		776540211D7C21830046BB18 /* file_open.h in Sources */ = {isa = PBXBuildFile; fileRef = 776540201D7C21830046BB18 /* file_open.h */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		770B747E1D4882510069BC30 /* block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block.h; sourceTree = "<group>"; };
 		77494E1D1E11680C00E8B2AC /* FilesOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesOp.h; sourceTree = "<group>"; };
 		77494E1E1E11680C00E8B2AC /* FilesOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesOp.m; sourceTree = "<group>"; };
+		7753852823ED076F007920C4 /* Pthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pthread.h; sourceTree = "<group>"; };
 		776540201D7C21830046BB18 /* file_open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_open.h; sourceTree = "<group>"; };
 		77E091251DBE48E400EEC0E1 /* echo_client.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_client.c.txt; sourceTree = "<group>"; };
 		77E091261DBE491D00EEC0E1 /* echo_server.c.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = echo_server.c.txt; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		770B742A1D487CC40069BC30 /* GCD */ = {
 			isa = PBXGroup;
 			children = (
+				7753852823ED076F007920C4 /* Pthread.h */,
 				770B74371D4880130069BC30 /* GCD.m */,
 				770B74381D4880130069BC30 /* GCD.h */,
 			);
@@ -206,6 +209,7 @@
 				770B742A1D487CC40069BC30 /* GCD */,
 				770B74261D487CAD0069BC30 /* Algorithm */,
 				770B74241D487C670069BC30 /* main.m */,
+				7753852723ED05A2007920C4 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -216,6 +220,14 @@
 				77494E1E1E11680C00E8B2AC /* FilesOp.m */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		7753852723ED05A2007920C4 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				776540201D7C21830046BB18 /* file_open.h */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +268,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 773297151C7C4870001F853F;
@@ -282,6 +295,7 @@
 				770B74251D487C670069BC30 /* main.m in Sources */,
 				776540211D7C21830046BB18 /* file_open.h in Sources */,
 				770B74611D4881210069BC30 /* queue.c in Sources */,
+				7753852923ED076F007920C4 /* Pthread.h in Sources */,
 				770B74301D487CDF0069BC30 /* SqList.c in Sources */,
 				770B74691D48818A0069BC30 /* stack.c in Sources */,
 				770B743F1D48802F0069BC30 /* client_socket.m in Sources */,
@@ -382,6 +396,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD_NO_PIE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -390,6 +405,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD_NO_PIE = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
